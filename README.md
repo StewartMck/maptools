@@ -1,7 +1,7 @@
 WGS84 datum.
 
 
-  N43°38'19.39"
+  N43°38'19.39"               ([^NESW-\s'\u00B0])\d+  Excld NESW, space, ', deg symbol
   43°38'19.39"N
   43 38 19.39
   43.63871944444445
@@ -28,6 +28,8 @@ Degrees and Decimal Minutes (DDD° MM.MMM')
 
 
 CENTER POINT OF ARRAY OF COORDINATES
+
+BATCH CONVERSIONS
 
 
 Haversine

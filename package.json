@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "A coordinates converter utility",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "prepublish": "tsc",
+    "prepare": "npm run build"
+    
   },
   "keywords": [
     "['coordinates'",
