@@ -5,6 +5,4 @@ export enum VALID_RANGE {
     LONG_MAX = 180.000000000,
   }
 
-export const MATCH = /([^NESW\s'\u00B0])\d+(\.\d+)*/g;
-
-
+export const MATCH = /([^NnEeSsWw\s'\u00B0])\d+(\.\d+)*/g;
