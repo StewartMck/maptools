@@ -16,12 +16,12 @@ export default class COORDS {
     this.long = long.match(MATCH);
 
     if (this.lat === null || this.long === null) {
-      throw new TypeError("Invalid input");
+      throw new TypeError("Invalid Input");
     } else {
       long.match(/[Ww]/g) ? (this.long[0] = `-${this.long[0]}`) : this.long[0];
       lat.match(/[Ss]/g) ? (this.lat[0] = `-${this.lat[0]}`) : this.lat[0];
-      console.log(this.lat, this.long);
     }
+
 
     assert(
       this.checkRange(
@@ -29,7 +29,7 @@ export default class COORDS {
         VALID_RANGE.LAT_MIN,
         VALID_RANGE.LAT_MAX
       ),
-      "Invalid Latitude Range"
+      "Invalid Latitude Range", 
     );
     assert(
       this.checkRange(
@@ -46,8 +46,17 @@ export default class COORDS {
   }
 
   toDEC(precision = 7): returnLAT_LONG | Error {
+
+    
     // Decimal Degrees = Degrees + minutes/60 + seconds/3600
     if (this.lat && this.long) {
+
+        if(this.lat.length === 1 && this.long.length === 1) {
+            const latResult = Number.parseFloat(this.lat[0]).toFixed(precision);
+            const longResult = Number.parseFloat(this.long[0]).toFixed(precision);
+            return {lat: latResult, long: longResult}
+        }
+
       const [latDeg, latMin, latSec] = this.lat;
       const [longDeg, longMin, longSec] = this.long;
 
@@ -57,6 +66,7 @@ export default class COORDS {
       )
         .toPrecision(precision)
         .match(/[^\.]\d+(\.\d+)*/g)}`;
+
       const longResult = `${longDeg}.${(
         Number.parseFloat(longMin) / 60 +
         Number.parseFloat(longSec) / 3600
@@ -71,7 +81,7 @@ export default class COORDS {
 
   toDMS() {}
 
-  read() {
-    console.log(`${this.lat}, ${this.long} `);
-  }
+//   read() {
+//     console.log(`${this.lat}, ${this.long} `);
+//   }
 }
