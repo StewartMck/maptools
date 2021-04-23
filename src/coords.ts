@@ -22,14 +22,13 @@ export default class COORDS {
       lat.match(/[Ss]/g) ? (this.lat[0] = `-${this.lat[0]}`) : this.lat[0];
     }
 
-
     assert(
       this.checkRange(
         Array.isArray(this.lat) ? Number.parseFloat(this.lat[0]) : this.lat,
         VALID_RANGE.LAT_MIN,
         VALID_RANGE.LAT_MAX
       ),
-      "Invalid Latitude Range", 
+      "Invalid Latitude Range"
     );
     assert(
       this.checkRange(
@@ -45,17 +44,27 @@ export default class COORDS {
     return degrees >= min && degrees <= max;
   }
 
-  toDEC(precision = 7): returnLAT_LONG | Error {
+  private convertdms(lat_long: RegExpMatchArray, type: string) {
+    const signed = lat_long![0].charAt(0) === '-' ? true : false;
+           
+    const decDeg = Math.abs(Number.parseFloat(lat_long![0]));
+    const deg = Math.abs(Number.parseInt(lat_long![0]));
+    const min = Math.round((decDeg - deg) * 60)
+    const sec = (((decDeg - deg) - min/60) * 3600).toFixed(2);
+    const cardinalLat = signed && type === 'lat' ? 'S' : 'N';
+    const cardinalLong = signed && type === 'long' ? 'W' : 'E';
 
-    
+    return `${type === 'lat' ? cardinalLat : cardinalLong}${deg}°${min}'${sec}"`
+  }
+
+  toDEC(precision = 7): returnLAT_LONG | Error {
     // Decimal Degrees = Degrees + minutes/60 + seconds/3600
     if (this.lat && this.long) {
-
-        if(this.lat.length === 1 && this.long.length === 1) {
-            const latResult = Number.parseFloat(this.lat[0]).toFixed(precision);
-            const longResult = Number.parseFloat(this.long[0]).toFixed(precision);
-            return {lat: latResult, long: longResult}
-        }
+      if (this.lat.length === 1 && this.long.length === 1) {
+        const latResult = Number.parseFloat(this.lat[0]).toFixed(precision);
+        const longResult = Number.parseFloat(this.long[0]).toFixed(precision);
+        return { lat: latResult, long: longResult };
+      }
 
       const [latDeg, latMin, latSec] = this.lat;
       const [longDeg, longMin, longSec] = this.long;
@@ -79,9 +88,23 @@ export default class COORDS {
     return new TypeError("Invalid input");
   }
 
-  toDMS() {}
+  toDMS() {
+      /*
+      DMS = d + m + s
+      d = int(DEC)
+      m = int(DEC - d * 60)
+      s = (DEC - d - m/60) * 3600
+      */
+      
+      if(this.lat?.length === 3 && this.long?.length === 3) {
+        const lat = `${this.lat[0]}°${this.lat[1]}'${this.lat[2]}"`;
+        const long = `${this.long[0]}°${this.long[1]}'${this.long[2]}"`;
+        return {lat, long};
+      }
+    
+      return {lat: this.convertdms(this.lat!, 'lat'), long: this.convertdms(this.long!, 'long')}
+      
+}
 
-//   read() {
-//     console.log(`${this.lat}, ${this.long} `);
-//   }
+
 }

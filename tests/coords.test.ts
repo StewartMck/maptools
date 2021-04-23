@@ -38,5 +38,12 @@ describe("Conversions", ()=>{
         expect(position.toDEC(5)).toEqual({lat: '-43.63872', long: '-116.24135'})
     })
 
+    test("DDM", () => {
+        const position = new coords('-43.63872', '-116.24135')
+        console.log(position.toDMS())
+        const position2 = new coords(`S43°38'19.39`, `W116°14'28.86"`)
+        console.log(position2.toDMS())
+    })
+
 
 });
