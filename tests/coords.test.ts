@@ -68,7 +68,7 @@ describe("Check Valid Input", () => {
 
 describe("Conversions", () => {
   test("INPUT: DEC - OUTPUT: DEC", () => {
-    const position = new coords("-43.63872", "-116.24135");
+    const position = new coords(-43.63872, -116.24135);
     expect(position.toDEC(2)).toEqual({ lat: "-43.64", long: "-116.24" });
   });
 
@@ -132,7 +132,7 @@ describe("Conversions", () => {
 });
 
 describe("Batch Conversion", () => {
-  test("Invalid Input: null", () => {
+  test("Invalid Input: EMPTY ARRAY", () => {
     expect(() => {
       COORDS.batchDEC([]);
     }).toThrowError(TypeError("One or more lat/long pairs invalid"));
@@ -163,7 +163,7 @@ describe("Batch Conversion", () => {
 
   test("INPUT: DEC - OUTPUT: DDM", () => {
     expect(
-      COORDS.batchDDM(["-43.63872", "-116.24135", "-43.63872", "-116.24135"])
+      COORDS.batchDDM([-43.63872, -116.24135, -43.63872, -116.24135])
     ).toEqual([
       { lat: `S43°38.3232'`, long: `W116°14.481'` },
       { lat: `S43°38.3232'`, long: `W116°14.481'` },

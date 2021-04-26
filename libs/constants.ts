@@ -11,9 +11,14 @@ export enum FORMAT {
   DDM = 'DDM',
 }
 
-export const MATCH = /([^NnEeSsWw\s'\u00B0])\d+(\.\d+)*/g;
+export const FORMAT_INPUT = /([^NnEeSsWw\s'\u00B0])\d+(\.\d+)*/g;
 
-export const BEHIND_DECIMAL = /[^\.]\d+(\.\d+)*/g;
+export const MATCH_BEHIND_DECIMAL = /[^\.]\d+(\.\d+)*/g;
+
+export enum TYPE {
+  LAT = "LAT",
+  LONG = 'LONG',
+}
 
 // `dd mm ss.sss, dd mm ss.sss`
 // `dd.dddddd, dd.dddddd`
