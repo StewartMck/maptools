@@ -66,14 +66,14 @@ describe("Check Valid Input", () => {
 });
 
 describe("Conversions", () => {
+    test("INPUT: DEC - OUTPUT: DEC", () => {
+      const position = new coords("-43.63872", "-116.24135");
+      expect(position.toDEC(2)).toEqual({ lat: "-43.64", long: "-116.24" });
+    });
+
   test("INPUT: DMS - OUTPUT: DEC", () => {
     const position = new coords(`S43°38'19.39`, `W116°14'28.86"`);
     expect(position.toDEC()).toEqual({ lat: "-43.63872", long: "-116.24135" });
-  });
-
-  test("INPUT: DEC - OUTPUT: DEC", () => {
-    const position = new coords("-43.63872", "-116.24135");
-    expect(position.toDEC(2)).toEqual({ lat: "-43.64", long: "-116.24" });
   });
 
   test("INPUT: DDM - OUTPUT: DEC", () => {
@@ -81,16 +81,16 @@ describe("Conversions", () => {
     expect(position.toDEC()).toEqual({ lat: "32.30642", long: "-122.61458" });
   });
 
-  test("INPUT: DEC - OUTPUT: DMS", () => {
-    const position = new coords("-43.63872", "-116.24135");
+  test("INPUT: DMS - OUTPUT: DMS", () => {
+    const position = new coords(`S43°38'19.39`, `W116°14'28.86"`);
     expect(position.toDMS()).toEqual({
       lat: `S43°38'19.39"`,
       long: `W116°14'28.86"`,
     });
   });
 
-  test("INPUT: DMS - OUTPUT: DMS", () => {
-    const position = new coords(`S43°38'19.39`, `W116°14'28.86"`);
+  test("INPUT: DEC - OUTPUT: DMS", () => {
+    const position = new coords("-43.63872", "-116.24135");
     expect(position.toDMS()).toEqual({
       lat: `S43°38'19.39"`,
       long: `W116°14'28.86"`,
