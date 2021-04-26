@@ -59,6 +59,8 @@ export default class COORDS {
     this.lat.format = this.checkFormat(this.lat);
     this.long.format = this.checkFormat(this.long);
 
+    console.log(this.lat, this.long)
+
   }
 
   private checkRange(degrees: number, min: VALID_RANGE, max: VALID_RANGE) {
@@ -103,6 +105,26 @@ export default class COORDS {
     return `${
       type === "lat" ? cardinalLat : cardinalLong
     }${deg}°${min}'${sec}"`;
+ 
+  }
+
+  private convertdmm({ value, signed, format }: processedLAT_LONG, type: string) {
+    const decDeg = value![0];
+    const deg = ~~value![0];
+    let min = 0;
+
+    if (format === 'DEC') {
+      min = Number(((decDeg - deg) * 60).toFixed(4));
+    } else if (format === 'DMS'){
+      min = value![1] + (value![2] / 60)
+    }
+
+    const cardinalLat = signed && type === "lat" ? "S" : "N";
+    const cardinalLong = signed && type === "long" ? "W" : "E";
+
+    return `${
+      type === "lat" ? cardinalLat : cardinalLong
+    }${deg}°${min}'`;
  
   }
 
@@ -177,4 +199,24 @@ export default class COORDS {
       long: this.convertdms(this.long!, "long"),
     };
   }
+
+  toDDM(){
+    if(this.lat.format === FORMAT.DDM && this.long.format === FORMAT.DDM){
+      const lat = `${this.lat.signed ? "S" : "N"}${this.lat.value![0]}°${
+        this.lat.value![1]
+      }'`;
+      const long = `${this.long.signed ? "W" : "E"}${this.long.value![0]}°${
+        this.long.value![1]
+      }'`;
+      return { lat, long };
+    }
+
+    
+    return {
+      lat: this.convertdmm(this.lat!, "lat"),
+      long: this.convertdmm(this.long!, "long"),
+    };
+  }
+
+
 }
