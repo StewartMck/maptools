@@ -43,10 +43,7 @@ export default class COORDS {
     if (inputLat === null || inputLong === null) {
       throw new TypeError("Invalid Input");
     }
-    if (inputLat.length === 0 || inputLong.length === 0) {
-      throw new TypeError("Input cannot be empty");
-    }
-
+  
     this.lat.signed = this.checkSigned(inputLat, lat);
     this.long.signed = this.checkSigned(inputLong, long);
 
@@ -114,12 +111,20 @@ export default class COORDS {
     const deg = ~~value![0];
     let min = 0;
     let sec = 0;
-    if (format === FORMAT.DEC) {
-      min = Math.round((decDeg - deg) * 60);
-      sec = Number(((decDeg - deg - min / 60) * 3600).toFixed(2));
-    } else if (format === FORMAT.DDM) {
-      min = ~~value![1];
-      sec = Number(((value![1] - min) * 60).toFixed(2));
+
+    switch (format) {
+      case FORMAT.DMS:
+        min = value![1];
+        sec = value![2];
+        break;
+      case FORMAT.DEC:
+        min = Math.round((decDeg - deg) * 60);
+        sec = Number(((decDeg - deg - min / 60) * 3600).toFixed(2));
+        break;
+      case FORMAT.DDM:
+        min = ~~value![1];
+        sec = Number(((value![1] - min) * 60).toFixed(2));
+        break;
     }
 
     const cardinalLat = signed && type === TYPE.LAT ? "S" : "N";
@@ -130,11 +135,7 @@ export default class COORDS {
     }${deg}°${min}'${sec}"`;
   }
 
-  private convertddm(
-    { value, signed, format }: processedLAT_LONG,
-    type: TYPE
-  ) {
-    
+  private convertddm({ value, signed, format }: processedLAT_LONG, type: TYPE) {
     const decDeg = value![0];
     const deg = ~~value![0];
     let min = 0;
@@ -208,23 +209,21 @@ export default class COORDS {
     return new TypeError("Values are not of the same type");
   }
 
+  /**
+   * Converts COORDS object to Degree Minutes and Seconds
+   * @returns lat: '(N | S)dd°mm'ss.ss"', long: '(W | E)ddd°mm'ss.ss"'
+   */
   toDMS() {
-    if (this.lat.format === FORMAT.DMS && this.long.format === FORMAT.DMS) {
-      const lat = `${this.lat.signed ? "S" : "N"}${this.lat.value![0]}°${
-        this.lat.value![1]
-      }'${this.lat.value![2]}"`;
-      const long = `${this.long.signed ? "W" : "E"}${this.long.value![0]}°${
-        this.long.value![1]
-      }'${this.long.value![2]}"`;
-      return { lat, long };
-    }
-
     return {
       lat: this.convertdms(this.lat!, TYPE.LAT),
       long: this.convertdms(this.long!, TYPE.LONG),
     };
   }
 
+  /**
+   * Converts COORDS object to Degree Decimal Minutes
+   * @returns lat: '(N | S)dd°mm.mmmm', long: (W | E)ddd°mm.mmmm
+   */
   toDDM() {
     return {
       lat: this.convertddm(this.lat!, TYPE.LAT),
@@ -232,7 +231,7 @@ export default class COORDS {
     };
   }
 
-  private static convert(
+  private static convertBatch(
     input: Array<string | number>,
     format: FORMAT
   ): Array<returnLAT_LONG> {
@@ -260,14 +259,14 @@ export default class COORDS {
   }
 
   static batchDEC(input: Array<string | number>): Array<any> {
-    return COORDS.convert(input, FORMAT.DEC);
+    return COORDS.convertBatch(input, FORMAT.DEC);
   }
 
   static batchDMS(input: Array<string | number>): Array<any> {
-    return COORDS.convert(input, FORMAT.DMS);
+    return COORDS.convertBatch(input, FORMAT.DMS);
   }
 
   static batchDDM(input: Array<string | number>): Array<any> {
-    return COORDS.convert(input, FORMAT.DDM);
+    return COORDS.convertBatch(input, FORMAT.DDM);
   }
 }

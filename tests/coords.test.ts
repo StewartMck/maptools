@@ -183,4 +183,18 @@ describe("Batch Conversion", () => {
       { lat: `S43°38'19.39"`, long: `W116°14'28.86"` },
     ]);
   });
+
+  test("INPUT: MIXED - OUTPUT: DMS", () => {
+    expect(
+      COORDS.batchDMS([
+        `S43°38.3232'`,
+        `W116°14'28.86"`,
+        32.30642,
+        `W 122° 36'52.5`,
+      ])
+    ).toEqual([
+      { lat: `S43°38'19.39"`, long: `W116°14'28.86"` },
+      { lat: `N32°18'23.11"`, long: `W122°36'52.5"` },
+    ]);
+  });
 });
