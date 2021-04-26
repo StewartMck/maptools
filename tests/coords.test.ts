@@ -67,10 +67,10 @@ describe("Check Valid Input", () => {
 });
 
 describe("Conversions", () => {
-    test("INPUT: DEC - OUTPUT: DEC", () => {
-      const position = new coords("-43.63872", "-116.24135");
-      expect(position.toDEC(2)).toEqual({ lat: "-43.64", long: "-116.24" });
-    });
+  test("INPUT: DEC - OUTPUT: DEC", () => {
+    const position = new coords("-43.63872", "-116.24135");
+    expect(position.toDEC(2)).toEqual({ lat: "-43.64", long: "-116.24" });
+  });
 
   test("INPUT: DMS - OUTPUT: DEC", () => {
     const position = new coords(`S43°38'19.39`, `W116°14'28.86"`);
@@ -131,9 +131,56 @@ describe("Conversions", () => {
   });
 });
 
-describe("Batch Conversion", ()=>{
-  test("INPUT: DMS", ()=>{
-    const batch = COORDS.batch([`N32°18'23.1"`, `W122°36'52.5"`, `N32°18'23.1"`, `W122°36'52.5"`, `N32°18'23.1"`, `W122°36'52.5"`])
-    console.log(batch)
-  })
-})
+describe("Batch Conversion", () => {
+  test("Invalid Input: null", () => {
+    expect(() => {
+      COORDS.batchDEC([]);
+    }).toThrowError(TypeError("One or more lat/long pairs invalid"));
+  });
+
+  test("Invalid Input: Missing Lat/Long Pair", () => {
+    expect(() => {
+      COORDS.batchDEC([`N32°18'23.1"`, `W122°36'52.5"`, `N32°18'23.1"`]);
+    }).toThrowError(TypeError("One or more lat/long pairs invalid"));
+  });
+
+  test("INPUT: DMS - OUTPUT: DEC", () => {
+    expect(
+      COORDS.batchDEC([
+        `N32°18'23.1"`,
+        `W122°36'52.5"`,
+        `32°18'23.1"`,
+        `-122°36'52.5"`,
+        `N 32 °18 23.1"`,
+        `W 122° 36'52.5`,
+      ])
+    ).toEqual([
+      { lat: "32.30642", long: "-122.61458" },
+      { lat: "32.30642", long: "-122.61458" },
+      { lat: "32.30642", long: "-122.61458" },
+    ]);
+  });
+
+  test("INPUT: DEC - OUTPUT: DDM", () => {
+    expect(
+      COORDS.batchDDM(["-43.63872", "-116.24135", "-43.63872", "-116.24135"])
+    ).toEqual([
+      { lat: `S43°38.3232'`, long: `W116°14.481'` },
+      { lat: `S43°38.3232'`, long: `W116°14.481'` },
+    ]);
+  });
+
+  test("INPUT: DDM - OUTPUT: DMS", () => {
+    expect(
+      COORDS.batchDMS([
+        `S43°38.3232'`,
+        `W116°14.481'`,
+        `S43°38.3232'`,
+        `W116°14.481'`,
+      ])
+    ).toEqual([
+      { lat: `S43°38'19.39"`, long: `W116°14'28.86"` },
+      { lat: `S43°38'19.39"`, long: `W116°14'28.86"` },
+    ]);
+  });
+});

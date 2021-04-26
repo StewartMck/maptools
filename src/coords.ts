@@ -14,22 +14,6 @@ interface processedLAT_LONG {
 }
 
 export default class COORDS {
-
-
-  static batch(input: Array<string>) : Array<COORDS> {
-    const coords = []
-    if (input.length % 2 === 0) {
-      let counter = 0;
-      while(counter < input.length){
-        coords.push(new COORDS(input[counter], input[counter + 1]))
-        counter = counter + 2
-      }
-    } else {
-      throw new TypeError("One or more lat/long pairs invalid")
-    }
-    return coords;
-  }
-
   private lat: processedLAT_LONG;
   private long: processedLAT_LONG;
 
@@ -81,7 +65,7 @@ export default class COORDS {
   }
 
   private checkSigned(lat_long: Array<string>, input: string) {
-    let [ deg ] = lat_long;
+    let [deg] = lat_long;
     input.match(/[Ww]/g) ? (deg = `-${deg}`) : deg;
     input.match(/[Ss]/g) ? (deg = `-${deg}`) : deg;
     return deg.charAt(0) === "-" ? true : false;
@@ -230,5 +214,44 @@ export default class COORDS {
       lat: this.convertdmm(this.lat!, "lat"),
       long: this.convertdmm(this.long!, "long"),
     };
+  }
+
+  private static convert(
+    input: Array<string>,
+    format: FORMAT
+  ): Array<returnLAT_LONG> {
+    const coords: Array<any> = [];
+    if (input.length % 2 === 0 && input.length !== 0) {
+      let counter = 0;
+      while (counter < input.length) {
+        switch (format) {
+          case FORMAT.DEC:
+            coords.push(new COORDS(input[counter], input[counter + 1]).toDEC());
+            break;
+          case FORMAT.DMS:
+            coords.push(new COORDS(input[counter], input[counter + 1]).toDMS());
+            break;
+          case FORMAT.DDM:
+            coords.push(new COORDS(input[counter], input[counter + 1]).toDDM());
+            break;
+        }
+        counter = counter + 2;
+      }
+    } else {
+      throw new TypeError("One or more lat/long pairs invalid");
+    }
+    return coords;
+  }
+
+  static batchDEC(input: Array<string>): Array<any> {
+    return COORDS.convert(input, FORMAT.DEC);
+  }
+
+  static batchDMS(input: Array<string>): Array<any> {
+    return COORDS.convert(input, FORMAT.DMS);
+  }
+
+  static batchDDM(input: Array<string>): Array<any> {
+    return COORDS.convert(input, FORMAT.DDM);
   }
 }
