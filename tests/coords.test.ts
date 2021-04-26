@@ -1,3 +1,4 @@
+import COORDS from "../src/coords";
 import coords from "../src/coords";
 
 describe("Check Valid Input", () => {
@@ -129,3 +130,10 @@ describe("Conversions", () => {
     });
   });
 });
+
+describe("Batch Conversion", ()=>{
+  test("INPUT: DMS", ()=>{
+    const batch = COORDS.batch([`N32°18'23.1"`, `W122°36'52.5"`, `N32°18'23.1"`, `W122°36'52.5"`, `N32°18'23.1"`, `W122°36'52.5"`])
+    console.log(batch)
+  })
+})

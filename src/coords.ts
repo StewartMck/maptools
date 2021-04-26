@@ -7,13 +7,29 @@ interface returnLAT_LONG {
 }
 
 interface processedLAT_LONG {
-  value: Array<any> | null;
+  value: Array<number> | null;
   signed: boolean;
   format: FORMAT | null;
   input: number | string;
 }
 
 export default class COORDS {
+
+
+  static batch(input: Array<string>) : Array<COORDS> {
+    const coords = []
+    if (input.length % 2 === 0) {
+      let counter = 0;
+      while(counter < input.length){
+        coords.push(new COORDS(input[counter], input[counter + 1]))
+        counter = counter + 2
+      }
+    } else {
+      throw new TypeError("One or more lat/long pairs invalid")
+    }
+    return coords;
+  }
+
   private lat: processedLAT_LONG;
   private long: processedLAT_LONG;
 
@@ -21,18 +37,18 @@ export default class COORDS {
     this.lat = { value: null, signed: false, format: null, input: lat };
     this.long = { value: null, signed: false, format: null, input: long };
 
-    this.lat.value = lat.match(MATCH);
-    this.long.value = long.match(MATCH);
+    const inputLat = lat.match(MATCH);
+    const inputLong = long.match(MATCH);
 
-    if (this.lat.value === null || this.long.value === null) {
+    if (inputLat === null || inputLong === null) {
       throw new TypeError("Invalid Input");
     }
 
-    this.lat.signed = this.checkSigned(this.lat, lat);
-    this.long.signed = this.checkSigned(this.long, long);
+    this.lat.signed = this.checkSigned(inputLat, lat);
+    this.long.signed = this.checkSigned(inputLong, long);
 
-    this.lat.value = this.lat.value.map((e) => Number(e));
-    this.long.value = this.long.value.map((e) => Number(e));
+    this.lat.value = inputLat.map((e) => Number(e));
+    this.long.value = inputLong.map((e) => Number(e));
 
     if (
       !this.checkRange(
@@ -64,11 +80,11 @@ export default class COORDS {
     return degrees >= min && degrees <= max;
   }
 
-  private checkSigned(lat_long: processedLAT_LONG, input: string) {
-    const { value } = lat_long;
-    input.match(/[Ww]/g) ? (value![0] = `-${value![0]}`) : value![0];
-    input.match(/[Ss]/g) ? (value![0] = `-${value![0]}`) : value![0];
-    return value![0].charAt(0) === "-" ? true : false;
+  private checkSigned(lat_long: Array<string>, input: string) {
+    let [ deg ] = lat_long;
+    input.match(/[Ww]/g) ? (deg = `-${deg}`) : deg;
+    input.match(/[Ss]/g) ? (deg = `-${deg}`) : deg;
+    return deg.charAt(0) === "-" ? true : false;
   }
 
   private checkFormat(lat_long: processedLAT_LONG) {
