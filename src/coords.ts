@@ -59,7 +59,6 @@ export default class COORDS {
     this.lat.format = this.checkFormat(this.lat);
     this.long.format = this.checkFormat(this.long);
 
-    console.log(this.lat, this.long)
   }
 
   private checkRange(degrees: number, min: VALID_RANGE, max: VALID_RANGE) {
@@ -103,7 +102,7 @@ export default class COORDS {
 
     return `${
       type === "lat" ? cardinalLat : cardinalLong
-    }${deg}°${min}'${sec}''`;
+    }${deg}°${min}'${sec}"`;
  
   }
 
@@ -134,7 +133,7 @@ export default class COORDS {
         longSec / 3600
       )
         .toPrecision(precision)
-        .match(/[^\.]\d+(\.\d+)*/g)}`;
+        .match(/[^\.]\d+(\.\d+)*/g)}`;        // matches everything behind the decimal
       return { lat: latResult, long: longResult };
     }
 

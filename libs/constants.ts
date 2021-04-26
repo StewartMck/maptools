@@ -13,6 +13,8 @@ export enum FORMAT {
 
 export const MATCH = /([^NnEeSsWw\s'\u00B0])\d+(\.\d+)*/g;
 
+export const BEHIND_DECIMAL = /[^\.]\d+(\.\d+)*/g;
+
 // `dd mm ss.sss, dd mm ss.sss`
 // `dd.dddddd, dd.dddddd`
 // `ddd° mm.mmm', ddd° mm.mmm'`
