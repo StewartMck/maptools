@@ -144,6 +144,12 @@ describe("Batch Conversion", () => {
     }).toThrowError(TypeError("One or more lat/long pairs invalid"));
   });
 
+  test("Invalid Input: Out of Range", () => {
+        expect(() => {
+      COORDS.batchDEC([`0°18'23.1"`, `W222°36'52.5"`, `N32°18'23.1"`, `W122°36'52.5"`]);
+    }).toThrowError(TypeError("Invalid Range: Long"))
+  });
+
   test("INPUT: DMS - OUTPUT: DEC", () => {
     expect(
       COORDS.batchDEC([
