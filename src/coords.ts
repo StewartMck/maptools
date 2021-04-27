@@ -16,7 +16,7 @@ interface processedLAT_LONG {
   value: Array<number> | null;
   signed: boolean;
   format: FORMAT | null;
-  input: number | string;
+  input: LAT_LONG;
 }
 
 /**
@@ -43,7 +43,9 @@ export default class COORDS {
     if (inputLat === null || inputLong === null) {
       throw new TypeError("Invalid Input");
     }
-  
+
+    // need to check for no sign and no cardinal
+
     this.lat.signed = this.checkSigned(inputLat, lat);
     this.long.signed = this.checkSigned(inputLong, long);
 
@@ -158,60 +160,47 @@ export default class COORDS {
     return `${type === TYPE.LAT ? cardinalLat : cardinalLong}${deg}°${min}'`;
   }
 
+  private convertdec(
+    { value, signed, format }: processedLAT_LONG,
+    precision: number
+  ) {
+    const [deg, min, sec] = value!;
+    let dec = ``;
+   
+    switch (format) {
+      case FORMAT.DEC:
+        dec = `${signed ? "-" : ""}${deg.toFixed(precision)}`;
+        break;
+      case FORMAT.DMS:
+        dec = `${signed ? "-" : ""}${deg}.${(min / 60 + sec / 3600)
+          .toPrecision(precision)
+          .match(MATCH_BEHIND_DECIMAL)}`;
+        break;
+      case FORMAT.DDM:
+        dec = `${signed ? "-" : ""}${deg}.${(min / 60)
+          .toPrecision(precision)
+          .match(MATCH_BEHIND_DECIMAL)}`;
+        break;
+    }
+
+    return dec;
+  }
+
   /**
    * Converts coordinates to Decimal Degree format:
    * @param precision optional number from 0 - 7, default is 5
    * @returns lat: "dd.ddddd", long: "dd.ddddd"
    */
   toDEC(precision = 5) {
-    if (this.lat.format === FORMAT.DEC && this.long.format === FORMAT.DEC) {
-      const latResult = `${
-        this.lat.signed ? "-" : ""
-      }${this.lat.value![0].toFixed(precision)}`;
-      const longResult = `${
-        this.long.signed ? "-" : ""
-      }${this.long.value![0].toFixed(precision)}`;
-      return { lat: latResult, long: longResult };
-    }
-
-    if (this.lat.format === FORMAT.DMS && this.long.format === FORMAT.DMS) {
-      const [latDeg, latMin, latSec] = this.lat.value!;
-      const [longDeg, longMin, longSec] = this.long.value!;
-      const latResult = `${this.lat.signed ? "-" : ""}${latDeg}.${(
-        latMin / 60 +
-        latSec / 3600
-      )
-        .toPrecision(precision)
-        .match(MATCH_BEHIND_DECIMAL)}`;
-      const longResult = `${this.long.signed ? "-" : ""}${longDeg}.${(
-        longMin / 60 +
-        longSec / 3600
-      )
-        .toPrecision(precision)
-        .match(MATCH_BEHIND_DECIMAL)}`;
-      return { lat: latResult, long: longResult };
-    }
-
-    if (this.lat.format === FORMAT.DDM && this.long.format === FORMAT.DDM) {
-      const [latDeg, latMin] = this.lat.value!;
-      const [longDeg, longMin] = this.long.value!;
-      const latResult = `${this.lat.signed ? "-" : ""}${latDeg}.${(latMin / 60)
-        .toPrecision(precision)
-        .match(MATCH_BEHIND_DECIMAL)}`;
-      const longResult = `${this.long.signed ? "-" : ""}${longDeg}.${(
-        longMin / 60
-      )
-        .toPrecision(precision)
-        .match(MATCH_BEHIND_DECIMAL)}`;
-      return { lat: latResult, long: longResult };
-    }
-
-    return new TypeError("Values are not of the same type");
+    return {
+      lat: this.convertdec(this.lat!, precision),
+      long: this.convertdec(this.long!, precision),
+    };
   }
 
   /**
    * Converts COORDS object to Degree Minutes and Seconds
-   * @returns lat: '(N | S)dd°mm'ss.ss"', long: '(W | E)ddd°mm'ss.ss"'
+   * @returns lat: <N|S>dd°mm'ss.ss", long: <W|E>ddd°mm'ss.ss"
    */
   toDMS() {
     return {
@@ -222,7 +211,7 @@ export default class COORDS {
 
   /**
    * Converts COORDS object to Degree Decimal Minutes
-   * @returns lat: '(N | S)dd°mm.mmmm', long: (W | E)ddd°mm.mmmm
+   * @returns lat: <N|S>dd°mm.mmmm', long: <W|E>ddd°mm.mmmm'
    */
   toDDM() {
     return {
@@ -258,6 +247,11 @@ export default class COORDS {
     return coords;
   }
 
+  /**
+   * Converts an array of numbers | strings that represent Latitude & Longitude to Decimal Degrees
+   * @param input Must be even number of elements in the array.
+   * @returns [lat: "", long: ""]
+   */
   static batchDEC(input: Array<string | number>): Array<any> {
     return COORDS.convertBatch(input, FORMAT.DEC);
   }
