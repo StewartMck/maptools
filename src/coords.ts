@@ -44,8 +44,6 @@ export default class COORDS {
       throw new TypeError("Invalid Input");
     }
 
-    // need to check for no sign and no cardinal
-
     this.lat.signed = this.checkSigned(inputLat, lat);
     this.long.signed = this.checkSigned(inputLong, long);
 
@@ -109,8 +107,8 @@ export default class COORDS {
   }
 
   private convertdms({ value, signed, format }: processedLAT_LONG, type: TYPE) {
-    const decDeg = value![0];
-    const deg = ~~value![0];
+    const [decDeg] = value!;
+    const deg = ~~decDeg;
     let min = 0;
     let sec = 0;
 
@@ -138,8 +136,8 @@ export default class COORDS {
   }
 
   private convertddm({ value, signed, format }: processedLAT_LONG, type: TYPE) {
-    const decDeg = value![0];
-    const deg = ~~value![0];
+    const [decDeg] = value!;
+    const deg = ~~decDeg;
     let min = 0;
 
     switch (format) {
@@ -166,7 +164,7 @@ export default class COORDS {
   ) {
     const [deg, min, sec] = value!;
     let dec = ``;
-   
+
     switch (format) {
       case FORMAT.DEC:
         dec = `${signed ? "-" : ""}${deg.toFixed(precision)}`;
@@ -187,7 +185,7 @@ export default class COORDS {
   }
 
   /**
-   * Converts coordinates to Decimal Degree format:
+   * Converts COORDS object to Decimal Degree format:
    * @param precision optional number from 0 - 7, default is 5
    * @returns lat: "dd.ddddd", long: "dd.ddddd"
    */
@@ -224,7 +222,7 @@ export default class COORDS {
     input: Array<string | number>,
     format: FORMAT
   ): Array<returnLAT_LONG> {
-    const coords: Array<any> = [];
+    const coords = [];
     if (input.length % 2 === 0 && input.length !== 0) {
       let index = 0;
       while (index < input.length) {
@@ -250,16 +248,26 @@ export default class COORDS {
   /**
    * Converts an array of numbers | strings that represent Latitude & Longitude to Decimal Degrees
    * @param input Must be even number of elements in the array.
-   * @returns [lat: "", long: ""]
+   * @returns [{lat: 'dd.ddddd', long: 'dd.ddddd'}]
    */
   static batchDEC(input: Array<string | number>): Array<any> {
     return COORDS.convertBatch(input, FORMAT.DEC);
   }
 
+  /**
+   * Converts an array of numbers | strings that represent Latitude & Longitude to Degree Minutes Seconds
+   * @param input Must be even number of elements in the array.
+   * @returns [{lat: '<N|S>dd°mm'ss.ss"', long: '<W|E>ddd°mm'ss.ss"'}]
+   */
   static batchDMS(input: Array<string | number>): Array<any> {
     return COORDS.convertBatch(input, FORMAT.DMS);
   }
 
+  /**
+   * Converts an array of numbers | strings that represent Latitude & Longitude to Degree Decimal Minutes
+   * @param input Must be even number of elements in the array.
+   * @returns [{lat: '<N|S>dd°mm'ss.ss"', long: '<W|E>ddd°mm'ss.ss"'}]
+   */
   static batchDDM(input: Array<string | number>): Array<any> {
     return COORDS.convertBatch(input, FORMAT.DDM);
   }
