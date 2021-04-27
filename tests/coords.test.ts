@@ -2,13 +2,13 @@ import COORDS from "../src/coords";
 import coords from "../src/coords";
 
 describe("Check Valid Input", () => {
-  test("Invalid Input", () => {
+  test("Invalid Input: Text", () => {
     expect(() => {
       new coords("invalid", "W116");
     }).toThrowError(TypeError("Invalid Input"));
   });
 
-  test("Out of Range", () => {
+  test("Invalid Input: Out of Range", () => {
     expect(() => {
       new coords(`S43°38'19.39`, `W216°14'28.86"`);
     }).toThrowError(TypeError("Invalid Range: Long"));
@@ -132,7 +132,7 @@ describe("Conversions", () => {
 });
 
 describe("Batch Conversion", () => {
-  test("Invalid Input: EMPTY ARRAY", () => {
+  test("Invalid Input: Empty Array", () => {
     expect(() => {
       COORDS.batchDEC([]);
     }).toThrowError(TypeError("One or more lat/long pairs invalid"));
@@ -145,9 +145,14 @@ describe("Batch Conversion", () => {
   });
 
   test("Invalid Input: Out of Range", () => {
-        expect(() => {
-      COORDS.batchDEC([`0°18'23.1"`, `W222°36'52.5"`, `N32°18'23.1"`, `W122°36'52.5"`]);
-    }).toThrowError(TypeError("Invalid Range: Long"))
+    expect(() => {
+      COORDS.batchDEC([
+        `0°18'23.1"`,
+        `W222°36'52.5"`,
+        `N32°18'23.1"`,
+        `W122°36'52.5"`,
+      ]);
+    }).toThrowError(TypeError("Invalid Range: Long"));
   });
 
   test("INPUT: DMS - OUTPUT: DEC", () => {
