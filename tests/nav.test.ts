@@ -22,15 +22,14 @@ describe("Distance", ()=>{
             `N53°30'22.8"`, `W113°13'-28.44"`,
              `N53°35'-15.29"`, `W113°11'-8.45"`,
             `N53°35'1.61"`, `W112°60'-5.29"`
-          ]), "km")).toEqual({distance: 43.01 , format: 'km'})
+          ]), "km")).toEqual({distance: 42.96 , format: 'km'})
     })
  
     test("Valid Input: User Provided", () => {
         expect(distance( [
-            { lat: 53.50779, long: -113.31886 },
-            { lat: '53.53448', long: '-113.25277' }
-          ])).toEqual({distance: 5.28, format: 'km'})
+            { lat:  53.50768960437428, long: -113.30924577376084 },
+            { lat: '53.53381699129032', long: '-113.23731415008545' }
+          ], 'nm', 4)).toEqual({distance: 3.0058, format: 'nm'})
     })
-
 
 })
