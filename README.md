@@ -1,96 +1,62 @@
-WGS84 datum.
+MapTools
+Utility Library to provide functionality like calculating distance, coords conversions, etc.
 
 
-  N43°38'19.39"               ([^NESW\s'\u00B0])\d+  Excld NESW, space, ', deg symbol
-  43°38'19.39"N
-  43 38 19.39
-  43.63871944444445
+Install
+npm install geolib
 
-  W116°14'28.86"
-  116°14'28.86"W
-  -116 14 28.86
-  -116.2413513485235
+Usage
+There is a UMD build and an ES Module build. You can either use the UMD build in Node like any other library:
 
-Decimal Degrees = Degrees + minutes/60 + seconds/3600
+const geolib = require('geolib');
+or in the browser by using a simple script element:
 
-Degrees Minutes Seconds to Degrees Minutes.m
-Degrees = Degrees
-Minutes.m = Minutes + (Seconds / 60)
+<script src="lib/geolib.js"></script>
+If you load it in the browser, you can access all the functions via window.geolib.
 
-Degrees Minutes.m to Decimal Degrees
-.d = M.m / 60
-Decimal Degrees = Degrees + .d
+If you're working with a bundler (like Webpack or Parcel) or have an environment that supports ES Modules natively, you can either import certain functions from the package directly:
 
-Degrees Minutes Seconds (DDD° MM' SS.S")
-Decimal Degrees (DDD.DDDDD°)
-UTM (Universal Transverse Mercator)
-Degrees and Decimal Minutes (DDD° MM.MMM')
+import { getDistance } from 'geolib';
+or load the whole library:
 
+import * as geolib from 'geolib';
+or you can import single functions directly to potentially make use of treeshaking (recommended):
 
-CENTER POINT OF ARRAY OF COORDINATES
+import getDistance from 'geolib/es/getDistance';
+General
+This library is written in TypeScript. You don't have to know TypeScript to use Geolib but the type definitions give you valuable information about the general usage, input parameters etc.
 
-BATCH CONVERSIONS
+Supported values and formats
+All methods that are working with coordinates accept either an object with a lat/latitude and a lon/lng/longitude property, or a GeoJSON coordinates array, like: [lon, lat]. All values can be either in decimal (53.471) or sexagesimal (53° 21' 16") format.
 
+Distance values are always floats and represent the distance in meters.
 
-Haversine
-dlon = lon2 - lon1
-dlat = lat2 - lat1
-a = (sin(dlat/2))^2 + cos(lat1) * cos(lat2) * (sin(dlon/2))^2
-c = 2 * atan2( sqrt(a), sqrt(1-a) )
-d = R * c (where R is the radius of the Earth)
+Functions
+getDistance(start, end, accuracy = 1)
+Calculates the distance between two geo coordinates.
 
+This function takes up to 3 arguments. First 2 arguments must be valid GeolibInputCoordinates (e.g. {latitude: 52.518611, longitude: 13.408056}). Coordinates can be in sexagesimal or decimal format. The third argument is accuracy (in meters). By default the accuracy is 1 meter. If you need a more accurate result, you can set it to a lower value, e.g. to 0.01 for centimeter accuracy. You can set it higher to have the result rounded to the next value that is divisible by your chosen accuracy (e.g. 25428 with an accuracy of 100 becomes 25400).
 
+getDistance(
+    { latitude: 51.5103, longitude: 7.49347 },
+    { latitude: "51° 31' N", longitude: "7° 28' E" }
+);
+// Working with W3C Geolocation API
+navigator.geolocation.getCurrentPosition(
+    (position) => {
+        console.log(
+            'You are ',
+            geolib.getDistance(position.coords, {
+                latitude: 51.525,
+                longitude: 7.4575,
+            }),
+            'meters away from 51.525, 7.4575'
+        );
+    },
+    () => {
+        alert('Position could not be determined.');
+    }
+);
+Returns the distance in meters as a numeric value.
 
-
-Variation: Variation is the angular difference between True North and Magnetic North
-Var W = M.N. is W T.N +
-var E = M.N. is E T.N -
-
-Deviation:  Deviation is a correction to Compass Heading to give Magnetic Heading
-Dev W = C.N. is W M.N -
-Dev E = C.N is E M.N + 
-
-Convergency: Convergency is defined as the angle of inclination Between two selected meridians measured at a given Latitude.
-Convergency = Ch. Long x Sine Mean Latitude
-
-Ex 1. Calculate the value of Convergence between A (N 45:25 E 025:36) and B(N 37:53 E042:17).
-A N 45:25 E 025:36
-B N 37:53 E042:17
-N 41:39 Mean Latitude 16:41 Change of Longitude
-Convergency = Ch. Long° x Sin Mean Latitude
-= 16°41' x Sin 41° 39'
-= 16.6833°x Sin 41.65°
-= 11.0874°
-NOTE Both Mean Latitude and Change of Longitude must be changed into decimal notation.
-
-CONVERGENCY = CHANGE OF LONGITUDE x SIN MEAN LATITUDE
-CONVERGENCY = DIFFERENCE BETWEEN INITIAL AND FINAL GC TRACKS
-
-
-CONVERSION ANGLE CA
-CONVERSION ANGLE = DIFFERENCE BETWEEN GREAT CIRCLE AND RHUMB LINE
-THE GREAT CIRCLE IS ALWAYS NEARER THE POLE
-THE RHUMB LINE IS ALWAYS NEARER THE EQUATOR
-
-CONVERSION ANGLE = ½ CONVERGENCEY
-CONVERGENCY = TWICE CONVERSION ANGLE
-CONVERGENCY = CHANGE OF LONGITUDE° x SIN MEAN LATITUDE
-CONVERSION ANGLE = ½ CHANGE OF LONGITUDE° x SIN MEAN LATITUDE
-CONVERSION ANGLE = DIFFERENCE BETWEEN GREAT CIRCLE AND RHUMB LINE
-CONVERGENCY - DIFFERENCE BETWEEN INITIAL AND FINAL GREAT CIRCLES
-
-DISTANCE
-KILOMETRE (KM.) 3280 feet
-STATUTE MILE (SM) 5280 feet
-NAUTICAL MILE (NM)  At the Equator 1 NM is 6046.4 feet At the pole 1 NM -is 6078 feet
-Standard Nautical Mile is 6080 feet (South Africa and UK)
-ICAO 1 NM = 1852 metres or 6076.1 feet
-Most navigational electronic calculators use 1 NM = 6076.1 feet.
-
-CHANGE OF LONGITUDE (CH. LONG) or DEPARTURE DISTANCE
-Departure is the distance in Nautical Miles along a parallel of Latitude in an East-West direction.
-Where mean lat = lat A + lat B / 2
-DEPARTURE = CHANGE of LONGITUDE (in minutes) x COSINE LATITUDE
-DISTANCE ALONG A PARALLEL OF LATITUDE IS DEPARTURE
-DISTANCE ALONG A MERIDIAN IS CHANGE OF LATITUDE
-
+getPreciseDistance(start, end[, int accuracy])

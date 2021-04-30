@@ -1,10 +1,10 @@
-import { distance, centerPoint } from "../src/nav";
+import { getDistance, centerPoint, orderByDistance } from "../src/nav";
 import COORDS from "../src/coords";
 
 describe("Distance", () => {
   test("Invalid Input: Format", () => {
     expect(() => {
-      distance(
+      getDistance(
         COORDS.batchDEC([
           `N53° 26' 42.19"`,
           `W113° 31' 33.42"`,
@@ -18,7 +18,7 @@ describe("Distance", () => {
 
   test("Invalid Input: Less than 2 points", () => {
     expect(() => {
-      distance([{ lat: 53.507788383961426, long: -113.31885708984761 }]);
+      getDistance([{ lat: 53.507788383961426, long: -113.31885708984761 }]);
     }).toThrowError(
       TypeError("At least 2 points are needed to calculate the distance")
     );
@@ -26,7 +26,7 @@ describe("Distance", () => {
 
   test("Valid Input: Batch DEC", () => {
     expect(
-      distance(
+      getDistance(
         COORDS.batchDEC([
           `N53°27'-18.85"`,
           `W113°32'-23.09"`,
@@ -46,7 +46,7 @@ describe("Distance", () => {
 
   test("Valid Input: User Provided", () => {
     expect(
-      distance(
+      getDistance(
         [
           { lat: 53.50768960437428, long: -113.30924577376084 },
           { lat: "53.53381699129032", long: "-113.23731415008545" },
@@ -64,7 +64,7 @@ describe("Center of Points", () => {
     expect(centerPoint([coords])).toEqual(coords);
   });
 
-  test("Return middle point", () => {
+  test("Return middle point for array of coords", () => {
     expect(
       centerPoint(
         COORDS.batchDEC([
@@ -81,3 +81,34 @@ describe("Center of Points", () => {
     ).toEqual({ lat: "-20.83315", long: "132.56395" });
   });
 });
+
+describe("Order By Distance", () => {
+  test("Valid Input", () => {
+    expect(orderByDistance(COORDS.batchDEC([
+      -21.0781885,
+      130.2679653,
+      -22.0304073,
+      133.3797261,
+      -20.1017191,
+      133.3017134,
+      -20.1017192,
+      133.3017126,
+    ]))).toEqual([
+      {
+        from: { lat: '-20.10172', long: '133.30171' },
+        to: { lat: '-20.10172', long: '133.30171' },
+        distance: 0
+      },
+      {
+        from: { lat: '-22.03041', long: '133.37973' },
+        to: { lat: '-20.10172', long: '133.30171' },
+        distance: 214.76
+      },
+      {
+        from: { lat: '-21.07819', long: '130.26797' },
+        to: { lat: '-22.03041', long: '133.37973' },
+        distance: 339
+      }
+    ])
+  })
+})
