@@ -1,3 +1,5 @@
+import { WGS84 } from "../libs/constants";
+
 interface LAT_LONG {
   lat: string | number;
   long: string | number;
@@ -12,6 +14,10 @@ enum DISTANCE_FORMAT {
 
 const convertRad = (value: number) => {
   return value * (Math.PI / 180);
+};
+
+const convertDeg = (value: number) => {
+  return value * (180 / Math.PI);
 };
 
 export function distance(
@@ -64,6 +70,56 @@ export function distance(
   };
 }
 
-// const centre = () => {
+export function centerPoint(points: Array<LAT_LONG>) {
+  const numberPoints = points.length;
+  const { b, a, feSq, seSq } = WGS84;
 
-// }
+  // convert to cartesian coords
+  const sum = points.reduce(
+    (acc, point) => {
+      const { X, Y, Z } = convertToCartesian(point);
+      return {
+        X: acc.X + X / numberPoints,
+        Y: acc.Y + Y / numberPoints,
+        Z: acc.Z + Z / numberPoints,
+      };
+    },
+    { X: 0, Y: 0, Z: 0 }
+  );
+
+  //convert to geodetic coords (lat/long DEC Deg)
+  const { X, Y, Z } = sum;
+
+  const p = Math.sqrt(X ** 2 + Y ** 2); //distance from the polar axis to the point
+  const R = Math.sqrt(p ** 2 + Z ** 2); //distance from the origin to the point
+
+  // parametric latitude
+  const tanβ = ((b * Z) / (a * p)) * (1 + (seSq * b) / R);
+  const sinβ = tanβ / Math.sqrt(1 + tanβ ** 2);
+  const cosβ = sinβ / tanβ;
+
+  return {
+    lat: convertDeg(
+      Math.atan2(Z + seSq * b * sinβ ** 3, p - feSq * a * cosβ ** 3)
+    ).toFixed(5),
+    long: convertDeg(Math.atan2(Y, X)).toFixed(5),
+  };
+}
+
+  const convertToCartesian = ({ lat, long }: LAT_LONG) => {
+  const { a, feSq } = WGS84;
+
+  const sinLat = Math.sin(convertRad(<number>lat));
+  const sinLong = Math.sin(convertRad(<number>long));
+  const cosLat = Math.cos(convertRad(<number>lat));
+  const cosLong = Math.cos(convertRad(<number>long));
+
+  const h = 0;
+  const v = a / Math.sqrt(1 - feSq * sinLat * sinLat);
+
+  const X = (v + h) * cosLat * cosLong;
+  const Y = (v + h) * cosLat * sinLong;
+  const Z = (v * (1 - feSq) + h) * sinLat;
+
+  return { X, Y, Z };
+};
