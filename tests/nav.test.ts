@@ -1,11 +1,11 @@
 import { getDistance, centerPoint, orderByDistance, getArea } from "../src/nav";
-import COORDS from "../src/coords";
+import {toDEC} from '../src/conversion'
 
 describe("Distance", () => {
   test("Invalid Input: Format", () => {
     expect(() => {
       getDistance(
-        COORDS.batchDEC([
+        toDEC([
           `N53° 26' 42.19"`,
           `W113° 31' 33.42"`,
           `N53° 35' 1.61"`,
@@ -27,7 +27,7 @@ describe("Distance", () => {
   test("Valid Input: Batch DEC", () => {
     expect(
       getDistance(
-        COORDS.batchDEC([
+        toDEC([
           `N53°27'-18.85"`,
           `W113°32'-23.09"`,
           `N53°30'-14.91"`,
@@ -60,14 +60,14 @@ describe("Distance", () => {
 
 describe("Center of Points", () => {
   test("Return same coords for single pair", () => {
-    const coords = new COORDS(`N53° 26' 42.19"`, `W113° 31' 33.42"`).toDEC();
-    expect(centerPoint([coords])).toEqual(coords);
+    const coords = toDEC([`N53° 26' 42.19"`, `W113° 31' 33.42"`]);
+    expect(centerPoint(coords)).toEqual(coords[0]);
   });
 
   test("Return middle point for array of coords", () => {
     expect(
       centerPoint(
-        COORDS.batchDEC([
+       toDEC([
           -21.0781885,
           130.2679653,
           -22.0304073,
@@ -84,7 +84,7 @@ describe("Center of Points", () => {
 
 describe("Order By Distance", () => {
   test("Valid Input", () => {
-    expect(orderByDistance({lat: 56.495000228117775, long:-88.26338679703304}, COORDS.batchDEC([
+    expect(orderByDistance({lat: 56.495000228117775, long:-88.26338679703304}, toDEC([
       61.46659628870247, -93.86230787510061,
       63.32600658563838, -85.55269557039314,
       60.26988668328659, -77.2462962114008,
@@ -120,7 +120,7 @@ describe("Order By Distance", () => {
 
 describe("Calculate Area from Coordinates", () => {
   test("test1", () => {
-   const coords = COORDS.batchDEC([
+   const coords = toDEC([
      -30.755695508016164,139.58931179712357,
     -31.026745675780326,139.67720242212357,
     -30.929020409557967,139.9243948049360,

@@ -27,3 +27,10 @@ export enum WGS84 {
   feSq = 2 * f - f * f,
   seSq = feSq / (1 - feSq),
 }
+
+export enum DISTANCE_FORMAT {
+  KM = 1,
+  M = 1000,
+  NM = 0.5399568,
+  MI = 0.62137119,
+}

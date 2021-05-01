@@ -1,8 +1,9 @@
 {
   "name": "navware",
   "version": "1.0.0",
-  "description": "A coordinates converter and navigation utility",
+  "description": "A coordinates converter and map tools utility",
   "main": "index.js",
+  "module": "index.es.js",
   "types": "index.d.ts",
   "scripts": {
     "test": "jest",

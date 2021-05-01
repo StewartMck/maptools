@@ -1,4 +1,4 @@
-import { WGS84 } from "../libs/constants";
+import { WGS84, DISTANCE_FORMAT } from "../libs/constants";
 
 interface LAT_LONG {
   lat: string | number;
@@ -10,13 +10,6 @@ interface DISTANCE {
   to: LAT_LONG;
   distance: number;
   format: string;
-}
-
-enum DISTANCE_FORMAT {
-  KM = 1,
-  M = 1000,
-  NM = 0.5399568,
-  Mi = 0.62137119,
 }
 
 const convertRad = (value: number) => {
@@ -131,45 +124,44 @@ export function centerPoint(points: Array<LAT_LONG>) {
   };
 }
 
-export function orderByDistance(origin: LAT_LONG, points: Array<LAT_LONG>,
-  format: string = "KM"){
-    const distances: Array<DISTANCE> = []
-    points.map((point) => {
-      const {distance} = getDistance([origin, point], format)
-      distances.push({
-        from: origin,
-        to: point,
-        distance: distance,
-        format: format.toLowerCase(),
-    })
-  })
+export function orderByDistance(
+  origin: LAT_LONG,
+  points: Array<LAT_LONG>,
+  format: string = "KM"
+) {
+  const distances: Array<DISTANCE> = [];
+  points.map((point) => {
+    const { distance } = getDistance([origin, point], format);
+    distances.push({
+      from: origin,
+      to: point,
+      distance: distance,
+      format: format.toLowerCase(),
+    });
+  });
 
-    return distances.sort((a,b) =>
-      a.distance - b.distance);
+  return distances.sort((a, b) => a.distance - b.distance);
 }
 
-
-export function getArea(lat_long: Array<LAT_LONG>){
+export function getArea(lat_long: Array<LAT_LONG>) {
   //shoelace algo
-  lat_long.push(lat_long[0])
+  lat_long.push(lat_long[0]);
 
   const cart = lat_long.map((point) => convertToCartesian(point));
 
- 
   let sum1 = 0;
   let sum2 = 0;
-  
-  cart.map((point, i, cart) => {
-    if(cart[i + 1]) {
-      const {X: lat1, Y: long1} = point;
-      const {X: lat2, Y: long2} = cart[i + 1]
-      sum1 += <number>lat1 * <number>long2
-    sum2 += <number>long1 * <number>lat2
-   }
-  })
-  console.log('sum1:', sum1, 'sum2:', sum2)
-  // const area = Math.abs(sum1 -sum2) / 2;
-  const area = Math.abs(sum1 -sum2) / 2
-  console.log('area:', area)
 
+  cart.map((point, i, cart) => {
+    if (cart[i + 1]) {
+      const { X: lat1, Y: long1 } = point;
+      const { X: lat2, Y: long2 } = cart[i + 1];
+      sum1 += <number>lat1 * <number>long2;
+      sum2 += <number>long1 * <number>lat2;
+    }
+  });
+  console.log("sum1:", sum1, "sum2:", sum2);
+  // const area = Math.abs(sum1 -sum2) / 2;
+  const area = Math.abs(sum1 - sum2) / 2;
+  console.log("area:", area);
 }

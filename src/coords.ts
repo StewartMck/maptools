@@ -7,10 +7,10 @@ import {
 } from "../libs/constants";
 
 type LAT_LONG = string | number;
-interface returnLAT_LONG {
-  lat: string;
-  long: string;
-}
+// interface returnLAT_LONG {
+//   lat: string;
+//   long: string;
+// }
 
 interface processedLAT_LONG {
   value: Array<number> | null;
@@ -218,10 +218,10 @@ export default class COORDS {
     };
   }
 
-  private static convertBatch(
+  static convertBatch(
     input: Array<string | number>,
     format: FORMAT
-  ): Array<returnLAT_LONG> {
+  ) {
     const coords = [];
     if (input.length % 2 === 0 && input.length !== 0) {
       let index = 0;
@@ -245,30 +245,4 @@ export default class COORDS {
     return coords;
   }
 
-  /**
-   * Converts an array of numbers | strings that represent Latitude & Longitude to Decimal Degrees
-   * @param input Must be even number of elements in the array.
-   * @returns [{lat: 'dd.ddddd', long: 'dd.ddddd'}]
-   */
-  static batchDEC(input: Array<string | number>): Array<any> {
-    return COORDS.convertBatch(input, FORMAT.DEC);
-  }
-
-  /**
-   * Converts an array of numbers | strings that represent Latitude & Longitude to Degree Minutes Seconds
-   * @param input Must be even number of elements in the array.
-   * @returns [{lat: '<N|S>dd°mm'ss.ss"', long: '<W|E>ddd°mm'ss.ss"'}]
-   */
-  static batchDMS(input: Array<string | number>): Array<any> {
-    return COORDS.convertBatch(input, FORMAT.DMS);
-  }
-
-  /**
-   * Converts an array of numbers | strings that represent Latitude & Longitude to Degree Decimal Minutes
-   * @param input Must be even number of elements in the array.
-   * @returns [{lat: '<N|S>dd°mm'ss.ss"', long: '<W|E>ddd°mm'ss.ss"'}]
-   */
-  static batchDDM(input: Array<string | number>): Array<any> {
-    return COORDS.convertBatch(input, FORMAT.DDM);
-  }
 }
