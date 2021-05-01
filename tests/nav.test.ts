@@ -1,4 +1,4 @@
-import { getDistance, centerPoint, orderByDistance } from "../src/nav";
+import { getDistance, centerPoint, orderByDistance, getArea } from "../src/nav";
 import COORDS from "../src/coords";
 
 describe("Distance", () => {
@@ -84,31 +84,49 @@ describe("Center of Points", () => {
 
 describe("Order By Distance", () => {
   test("Valid Input", () => {
-    expect(orderByDistance(COORDS.batchDEC([
-      -21.0781885,
-      130.2679653,
-      -22.0304073,
-      133.3797261,
-      -20.1017191,
-      133.3017134,
-      -20.1017192,
-      133.3017126,
+    expect(orderByDistance({lat: 56.495000228117775, long:-88.26338679703304}, COORDS.batchDEC([
+      61.46659628870247, -93.86230787510061,
+      63.32600658563838, -85.55269557039314,
+      60.26988668328659, -77.2462962114008,
+      55.46098932075369, -77.3115710914306,     
     ]))).toEqual([
       {
-        from: { lat: '-20.10172', long: '133.30171' },
-        to: { lat: '-20.10172', long: '133.30171' },
-        distance: 0
+        from: { lat: 56.495000228117775, long: -88.26338679703304 },
+        to: { lat: '61.46660', long: '-93.86231' },
+        distance: 637.8,
+        format: 'km'
       },
       {
-        from: { lat: '-22.03041', long: '133.37973' },
-        to: { lat: '-20.10172', long: '133.30171' },
-        distance: 214.76
+        from: { lat: 56.495000228117775, long: -88.26338679703304 },
+        to: { lat: '55.46099', long: '-77.31157' },
+        distance: 689.41,
+        format: 'km'
       },
       {
-        from: { lat: '-21.07819', long: '130.26797' },
-        to: { lat: '-22.03041', long: '133.37973' },
-        distance: 339
-      }
+        from: { lat: 56.495000228117775, long: -88.26338679703304 },
+        to: { lat: '60.26989', long: '-77.24630' },
+        distance: 764.76,
+        format: 'km'
+      },
+      {
+        from: { lat: 56.495000228117775, long: -88.26338679703304 },
+        to: { lat: '63.32601', long: '-85.55270' },
+        distance: 773.21,
+        format: 'km'
+      },
     ])
+  })
+})
+
+describe("Calculate Area from Coordinates", () => {
+  test("test1", () => {
+   const coords = COORDS.batchDEC([
+     -30.755695508016164,139.58931179712357,
+    -31.026745675780326,139.67720242212357,
+    -30.929020409557967,139.9243948049360,
+    -30.563139898321857,140.02052517602982,
+    -30.500447229869152,139.79530544946732,
+    ])
+      console.log('area:', getArea(coords))
   })
 })

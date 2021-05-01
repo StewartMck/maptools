@@ -1,62 +1,77 @@
-MapTools
-Utility Library to provide functionality like calculating distance, coords conversions, etc.
+# maptools
 
 
-Install
-npm install geolib
+WGS84 Library to provide basic functions such as converting coordinates between different formats, calculating distance and finding the center point.
 
-Usage
-There is a UMD build and an ES Module build. You can either use the UMD build in Node like any other library:
+## Install
 
-const geolib = require('geolib');
-or in the browser by using a simple script element:
+### Node.JS
 
-<script src="lib/geolib.js"></script>
-If you load it in the browser, you can access all the functions via window.geolib.
+```bash
+npm install maptools --save
+```
 
-If you're working with a bundler (like Webpack or Parcel) or have an environment that supports ES Modules natively, you can either import certain functions from the package directly:
+```javascript
+const maptools = require('maptools');
+```
 
-import { getDistance } from 'geolib';
-or load the whole library:
+### Web
 
-import * as geolib from 'geolib';
-or you can import single functions directly to potentially make use of treeshaking (recommended):
+```html
+<script language="JavaScript" src="/maptools.js"></script>
+```
 
-import getDistance from 'geolib/es/getDistance';
-General
-This library is written in TypeScript. You don't have to know TypeScript to use Geolib but the type definitions give you valuable information about the general usage, input parameters etc.
+## Usage
 
-Supported values and formats
-All methods that are working with coordinates accept either an object with a lat/latitude and a lon/lng/longitude property, or a GeoJSON coordinates array, like: [lon, lat]. All values can be either in decimal (53.471) or sexagesimal (53° 21' 16") format.
+[`latDec`, `lonDec`] = dms2dec(String `lat`, String `latRef`, String `lon`, String `lonRef`);
 
-Distance values are always floats and represent the distance in meters.
+#### Params
 
-Functions
-getDistance(start, end, accuracy = 1)
-Calculates the distance between two geo coordinates.
+* `lat` – latitude in "degrees, minutes, seconds" format
+* `lagRef` – latitude hemisphere reference (N or S)
+* `lon` – longitude in "degrees, minutes, seconds" format
+* `lonRef` – longitude hemisphere reference (E or W)
 
-This function takes up to 3 arguments. First 2 arguments must be valid GeolibInputCoordinates (e.g. {latitude: 52.518611, longitude: 13.408056}). Coordinates can be in sexagesimal or decimal format. The third argument is accuracy (in meters). By default the accuracy is 1 meter. If you need a more accurate result, you can set it to a lower value, e.g. to 0.01 for centimeter accuracy. You can set it higher to have the result rounded to the next value that is divisible by your chosen accuracy (e.g. 25428 with an accuracy of 100 becomes 25400).
+#### Return
 
-getDistance(
-    { latitude: 51.5103, longitude: 7.49347 },
-    { latitude: "51° 31' N", longitude: "7° 28' E" }
-);
-// Working with W3C Geolocation API
-navigator.geolocation.getCurrentPosition(
-    (position) => {
-        console.log(
-            'You are ',
-            geolib.getDistance(position.coords, {
-                latitude: 51.525,
-                longitude: 7.4575,
-            }),
-            'meters away from 51.525, 7.4575'
-        );
-    },
-    () => {
-        alert('Position could not be determined.');
-    }
-);
-Returns the distance in meters as a numeric value.
+* `latDec` – latitude converted into decimal format
+* `lonDec` – longitude converted into decimal format
 
-getPreciseDistance(start, end[, int accuracy])
+### Parse dms strings
+
+```javascript
+var dec = dms2dec("60/1, 21/1, 4045/100", "N", "5/1, 22/1, 1555/100", "E");
+// dec[0] == 60.36123611111111, dec[1] == 5.370986111111111
+
+// without spaces or commas in the dms strings are also supported
+var dec = dms2dec("60/1,21/1,4045/100", "N", "5/1,22/1,1555/100", "E");
+var dec = dms2dec("60/1 21/1 4045/100", "N", "5/1 22/1 1555/100", "E");
+```
+
+### Parse dms arrays
+
+```javascript
+var dec = dms2dec(["60/1", "21/1", "4045/100"], "N", ["5/1", "22/1", "1555/100"], "E");
+// dec[0] == 60.36123611111111, dec[1] == 5.370986111111111
+```
+
+#### dms arrays as decimal
+
+```javascript
+var dec = dms2dec([60, 21, 40.45], "N", [5, 22, 15.55], "E");
+// dec[0] == 60.36123611111111, dec[1] == 5.370986111111111
+```
+
+### GeoJSON
+
+`NB!` Remember that GeoJSON stores coordinates in reversed order (`longitude`,
+`latitude`) which means you have to reverse the order of the coordinates
+returned from `dms2dec()`.
+
+```
+var geojson = {
+  type: 'Point',
+  coordinates: dms2dec(lat, latRef, lon, lonRef).reverse()
+};
+```
+

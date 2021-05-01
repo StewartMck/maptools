@@ -9,6 +9,7 @@ interface DISTANCE {
   from: LAT_LONG;
   to: LAT_LONG;
   distance: number;
+  format: string;
 }
 
 enum DISTANCE_FORMAT {
@@ -130,19 +131,45 @@ export function centerPoint(points: Array<LAT_LONG>) {
   };
 }
 
-export function orderByDistance(lat_long: Array<LAT_LONG>,
-  format: string = "KM",){
+export function orderByDistance(origin: LAT_LONG, points: Array<LAT_LONG>,
+  format: string = "KM"){
     const distances: Array<DISTANCE> = []
-    let index = 0;
-    while (index < lat_long.length - 1) {
-      const {distance} = getDistance([lat_long[index], lat_long[index + 1]], format)
+    points.map((point) => {
+      const {distance} = getDistance([origin, point], format)
       distances.push({
-        from: lat_long[index],
-        to: lat_long[index + 1],
+        from: origin,
+        to: point,
         distance: distance,
-      })
-      index++
-    }
+        format: format.toLowerCase(),
+    })
+  })
+
     return distances.sort((a,b) =>
       a.distance - b.distance);
+}
+
+
+export function getArea(lat_long: Array<LAT_LONG>){
+  //shoelace algo
+  lat_long.push(lat_long[0])
+
+  const cart = lat_long.map((point) => convertToCartesian(point));
+
+ 
+  let sum1 = 0;
+  let sum2 = 0;
+  
+  cart.map((point, i, cart) => {
+    if(cart[i + 1]) {
+      const {X: lat1, Y: long1} = point;
+      const {X: lat2, Y: long2} = cart[i + 1]
+      sum1 += <number>lat1 * <number>long2
+    sum2 += <number>long1 * <number>lat2
+   }
+  })
+  console.log('sum1:', sum1, 'sum2:', sum2)
+  // const area = Math.abs(sum1 -sum2) / 2;
+  const area = Math.abs(sum1 -sum2) / 2
+  console.log('area:', area)
+
 }
