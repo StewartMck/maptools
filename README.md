@@ -143,8 +143,8 @@ const distanceNM = getDistance(points, 'nm', 4);
 #### Params
 `An origin point and array of coordinate pairs`
 
-* `origin` – {"lat": lat, "long": long}
-* `points` – Array of {"lat": lat, "long": long} pairs
+* `origin` – {"lat": lat, "long": long} pair in DEC format
+* `points` – Array of {"lat": lat, "long": long} pairs in DEC format
 * `format` - unit of measurement for output, default is 'km'
 
     | Symbol  | Unit of Measurement |
