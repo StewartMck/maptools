@@ -1,5 +1,5 @@
-import { getDistance, centerPoint, orderByDistance, getArea } from "../src/nav";
-import {toDEC} from '../src/conversion'
+import { getDistance, centerPoint, orderByDistance, getArea } from '../src/index'
+import {toDEC} from '../src/index'
 
 describe("Distance", () => {
   test("Invalid Input: Format", () => {

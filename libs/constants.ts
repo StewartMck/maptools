@@ -34,3 +34,15 @@ export enum DISTANCE_FORMAT {
   NM = 0.5399568,
   MI = 0.62137119,
 }
+
+export interface LAT_LONG {
+  lat: string | number;
+  long: string | number;
+}
+
+export interface DISTANCE {
+  from: LAT_LONG;
+  to: LAT_LONG;
+  distance: number;
+  format: string;
+}

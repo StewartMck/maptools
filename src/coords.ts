@@ -7,18 +7,12 @@ import {
 } from "../libs/constants";
 
 type LAT_LONG = string | number;
-// interface returnLAT_LONG {
-//   lat: string;
-//   long: string;
-// }
-
 interface processedLAT_LONG {
   value: Array<number> | null;
   signed: boolean;
   format: FORMAT | null;
   input: LAT_LONG;
 }
-
 /**
  * Creates a new COORDS object
  *
@@ -218,10 +212,7 @@ export default class COORDS {
     };
   }
 
-  static convertBatch(
-    input: Array<string | number>,
-    format: FORMAT
-  ) {
+  static convertBatch(input: Array<string | number>, format: FORMAT) {
     const coords = [];
     if (input.length % 2 === 0 && input.length !== 0) {
       let index = 0;
@@ -244,5 +235,4 @@ export default class COORDS {
     }
     return coords;
   }
-
 }

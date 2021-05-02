@@ -1,44 +1,7 @@
-import { WGS84, DISTANCE_FORMAT } from "../libs/constants";
+import { WGS84, DISTANCE_FORMAT, LAT_LONG, DISTANCE } from "../libs/constants";
+import { convertDeg, convertRad, convertToCartesian } from "../libs/helpers";
 
-interface LAT_LONG {
-  lat: string | number;
-  long: string | number;
-}
-
-interface DISTANCE {
-  from: LAT_LONG;
-  to: LAT_LONG;
-  distance: number;
-  format: string;
-}
-
-const convertRad = (value: number) => {
-  return value * (Math.PI / 180);
-};
-
-const convertDeg = (value: number) => {
-  return value * (180 / Math.PI);
-};
-
-const convertToCartesian = ({ lat, long }: LAT_LONG) => {
-  const { a, feSq } = WGS84;
-
-  const sinLat = Math.sin(convertRad(<number>lat));
-  const sinLong = Math.sin(convertRad(<number>long));
-  const cosLat = Math.cos(convertRad(<number>lat));
-  const cosLong = Math.cos(convertRad(<number>long));
-
-  const h = 0;
-  const v = a / Math.sqrt(1 - feSq * sinLat * sinLat);
-
-  const X = (v + h) * cosLat * cosLong;
-  const Y = (v + h) * cosLat * sinLong;
-  const Z = (v * (1 - feSq) + h) * sinLat;
-
-  return { X, Y, Z };
-};
-
-export function getDistance(
+const getDistance = function (
   lat_long: Array<LAT_LONG>,
   format: string = "KM",
   precision: number = 2
@@ -86,9 +49,9 @@ export function getDistance(
     distance: Number(totalDistance.toFixed(precision)),
     format: format.toLowerCase(),
   };
-}
+};
 
-export function centerPoint(points: Array<LAT_LONG>) {
+const centerPoint = function (points: Array<LAT_LONG>) {
   const numberPoints = points.length;
   const { b, a, feSq, seSq } = WGS84;
 
@@ -122,9 +85,9 @@ export function centerPoint(points: Array<LAT_LONG>) {
     ).toFixed(5),
     long: convertDeg(Math.atan2(Y, X)).toFixed(5),
   };
-}
+};
 
-export function orderByDistance(
+const orderByDistance = function (
   origin: LAT_LONG,
   points: Array<LAT_LONG>,
   format: string = "KM"
@@ -141,9 +104,9 @@ export function orderByDistance(
   });
 
   return distances.sort((a, b) => a.distance - b.distance);
-}
+};
 
-export function getArea(lat_long: Array<LAT_LONG>) {
+const getArea = function (lat_long: Array<LAT_LONG>) {
   //shoelace algo
   lat_long.push(lat_long[0]);
 
@@ -164,4 +127,6 @@ export function getArea(lat_long: Array<LAT_LONG>) {
   // const area = Math.abs(sum1 -sum2) / 2;
   const area = Math.abs(sum1 - sum2) / 2;
   console.log("area:", area);
-}
+};
+
+export { getDistance, getArea, centerPoint, orderByDistance };
