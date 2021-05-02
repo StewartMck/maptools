@@ -1,4 +1,4 @@
-import { getDistance, centerPoint, orderByDistance, getArea } from '../src/index'
+import { getDistance, getCenterPoint, orderByDistance, getArea } from '../src/index'
 import {toDEC} from '../src/index'
 
 describe("Distance", () => {
@@ -61,12 +61,12 @@ describe("Distance", () => {
 describe("Center of Points", () => {
   test("Return same coords for single pair", () => {
     const coords = toDEC([`N53° 26' 42.19"`, `W113° 31' 33.42"`]);
-    expect(centerPoint(coords)).toEqual(coords[0]);
+    expect(getCenterPoint(coords)).toEqual(coords[0]);
   });
 
   test("Return middle point for array of coords", () => {
     expect(
-      centerPoint(
+      getCenterPoint(
        toDEC([
           -21.0781885,
           130.2679653,

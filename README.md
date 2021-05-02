@@ -15,6 +15,10 @@ npm install maptools --save
 const maptools = require('maptools');
 ```
 
+```javascript
+import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } form 'maptools';
+```
+
 ### Web
 
 ```html
@@ -46,9 +50,12 @@ const maptools = require('maptools');
 >| dd mm.mmmm S| dd mm |
 >|-d mm.mmmm| -d |
 
+---
+
 ## Conversion Functions
 
 ---
+
 >Accepts an array of strings or numbers as per the accepted format. Returns an object with the converted latitude and longitude pair(s).
 ### `toDMS([lat, long])`
 ### `toDEC([lat, long], precision = 5)`
@@ -70,7 +77,6 @@ const maptools = require('maptools');
 * Latitude is of type string
 * Longitude is of type string
  
-
 #### Errors
 | Input | Error |
 | :---| :--- |
@@ -78,7 +84,6 @@ const maptools = require('maptools');
 |Odd length array  | TypeError:  "One or more lat/long pairs invalid" |
 |Out of Range Lat  | TypeError:  "Invalid Range: Lat" |
 |Out of Range Long  | TypeError:  "Invalid Range: Long" |
-
 
 #### Examples
 
@@ -90,9 +95,13 @@ const pointB = toDMS([-43.63872, -116.24135])
 const pointC = toDDM([`32° 18.385' N`, `122° 36.875' W`])
 // [{ lat: N32°18.385', long: W122°36.875' }]
 ```
+
 ---
+
 ## Map Functions
+
 ---
+
 ### `getDistance(points, format = "km", precision = 2)`
 >Uses the Harvesine Formula to calculate the distance between two pairs of coordinates. The spherical radius is calculated using the average latitude between the two points. The distance between points [A, B, C, D] is the sum of: (A + B) + (B + C) + (C + D). The unit of measurement is optional with the default as km. The precision is also option with the default as 2 decimal places. Precision must be used in combination with the format argument.
 #### Params
@@ -209,7 +218,8 @@ const points = orderByDistance(
 |Invalid format symbol  | TypeError:  "Invalid output format" |
 
 ---
-### `centerPoint(points)`
+
+### `getCenterPoint(points)`
 >Accepts an array of {"lat": lat, "long": long} objects. Iterates over the array, converting the pairs of Geodetic coordinates into their respective cartesian coordinates. The height is assumed to be 0. Sums and averages to find the center point. 
 #### Params
 `Array of pairs of coordinates in object form`
@@ -222,7 +232,7 @@ const points = orderByDistance(
 
 #### Example
 ```javascript
-const center = centerPoint(
+const center = getCenterPoint(
        toDEC([
           -21.0781885,
           130.2679653,
@@ -239,7 +249,9 @@ const center = centerPoint(
 #### Errors
 | Input | Error |
 | :---| :--- |
+
 ---
+
 ### `getArea(points)`
 
 #### Params

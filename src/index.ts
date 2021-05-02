@@ -1,5 +1,5 @@
 import { toDDM, toDEC, toDMS } from "./conversion";
-import { getArea, getDistance, centerPoint, orderByDistance } from "./mapTools";
+import { getArea, getDistance, getCenterPoint, orderByDistance } from "./mapTools";
 
 export {
   toDDM,
@@ -7,6 +7,6 @@ export {
   toDMS,
   getArea,
   getDistance,
-  centerPoint,
+  getCenterPoint,
   orderByDistance,
 };

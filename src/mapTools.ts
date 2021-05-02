@@ -3,9 +3,9 @@ import { convertDeg, convertRad, convertToCartesian } from "../libs/helpers";
 
 /**
  * Sums the distance between an array of lat/long pairs
- * @param lat_long Array of {"lat": lat, "long": long} in DEC format
- * @param format  [format='km'] - Unit of measurement
- * @param precision [precision=2] - Number of decimal places
+ * @param lat_long Array of {"lat": lat, "long": long} in DEC format.
+ * @param format  [format='km'] - Unit of measurement.
+ * @param precision [precision=2] - Number of decimal places.
  * @returns Object {"distance": distance, "format": format}
  */
 const getDistance = function (
@@ -59,11 +59,11 @@ const getDistance = function (
 };
 
 /**
- * Returns the centre point of an array of lat/long pairs
- * @param points Array of {"lat": lat, "long": long} in DEC format
- * @returns Object {"lat": lat, "long": long} in DEC format
+ * Returns the centre point of an array of lat/long pairs.
+ * @param points Array of {"lat": lat, "long": long} in DEC format.
+ * @returns Object {"lat": lat, "long": long} in DEC format.
  */
-const centerPoint = function (points: Array<LAT_LONG>) {
+const getCenterPoint = function (points: Array<LAT_LONG>) {
   const numberPoints = points.length;
   const { b, a, feSq, seSq } = WGS84;
 
@@ -101,8 +101,8 @@ const centerPoint = function (points: Array<LAT_LONG>) {
 
 /**
  * Orders an array of lat/long pairs from nearest to farthest.
- * @param origin {"lat": lat, "long": long} pair in DEC format
- * @param points Array of {"lat": lat, "long": long} pairs in DEC format
+ * @param origin {"lat": lat, "long": long} pair in DEC format.
+ * @param points Array of {"lat": lat, "long": long} pairs in DEC format.
  * @param format [format='km'] - Unit of measurement.
  * @returns Object {from: { "lat": lat, "long": long }, to: { "lat": lat, "long": long }, "distance": distance, "format": format }
  */
@@ -148,4 +148,4 @@ const getArea = function (lat_long: Array<LAT_LONG>) {
   console.log("area:", area);
 };
 
-export { getDistance, getArea, centerPoint, orderByDistance };
+export { getDistance, getArea, getCenterPoint, orderByDistance };
