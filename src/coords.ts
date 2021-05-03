@@ -22,7 +22,7 @@ interface processedLAT_LONG {
  * @returns Array of numbers
  *
  */
-export default class COORDS {
+export default class Coords {
   private lat: processedLAT_LONG;
   private long: processedLAT_LONG;
 
@@ -219,13 +219,13 @@ export default class COORDS {
       while (index < input.length) {
         switch (format) {
           case FORMAT.DEC:
-            coords.push(new COORDS(input[index], input[index + 1]).toDEC());
+            coords.push(new Coords(input[index], input[index + 1]).toDEC());
             break;
           case FORMAT.DMS:
-            coords.push(new COORDS(input[index], input[index + 1]).toDMS());
+            coords.push(new Coords(input[index], input[index + 1]).toDMS());
             break;
           case FORMAT.DDM:
-            coords.push(new COORDS(input[index], input[index + 1]).toDDM());
+            coords.push(new Coords(input[index], input[index + 1]).toDDM());
             break;
         }
         index = index + 2;

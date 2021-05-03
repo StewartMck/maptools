@@ -47,7 +47,7 @@ const getDistance = function (
       Math.cos(phi1) * Math.cos(phi2) * Math.pow(Math.sin(delta_lambda / 2), 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     distance.push(radius * c * conversion);
-    index++;
+    index += 1;
   }
 
   const totalDistance = distance.reduce((acc, prev) => acc + prev, 0);
