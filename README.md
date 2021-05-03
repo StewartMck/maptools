@@ -16,7 +16,7 @@ const maptools = require('maptools');
 ```
 
 ```javascript
-import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } form 'maptools';
+import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from 'maptools';
 ```
 
 ### Web
