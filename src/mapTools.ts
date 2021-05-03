@@ -59,7 +59,7 @@ const getDistance = function (
 };
 
 /**
- * Returns the centre point of an array of lat/long pairs.
+ * Returns the center point of an array of lat/long pairs.
  * @param points Array of {"lat": lat, "long": long} in DEC format.
  * @returns Object {"lat": lat, "long": long} in DEC format.
  */

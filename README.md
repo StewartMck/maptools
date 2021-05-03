@@ -1,7 +1,7 @@
 # maptools
 
-
-**WGS84** utility library to provide basic functions such as converting coordinates between different formats, calculating distance and finding the center point of a group of coordinates.
+Maptools is a **WGS84** map utility library.
+It provides basic functionality such as converting coordinates between different formats and calculating distance. Furthermore, given a group of coordinates it can order by distance, find the center point as well as calculate the area.
 
 ## Install
 
@@ -50,6 +50,8 @@ import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } form
 >| dd mm.mmmm S| dd mm |
 >|-d mm.mmmm| -d |
 
+<br>
+
 ---
 
 ## Conversion Functions
@@ -95,6 +97,8 @@ const pointB = toDMS([-43.63872, -116.24135])
 const pointC = toDDM([`32° 18.385' N`, `122° 36.875' W`])
 // [{ lat: N32°18.385', long: W122°36.875' }]
 ```
+
+<br>
 
 ---
 
@@ -281,12 +285,7 @@ const center = getCenterPoint(
 ### Examples
 
 ```javascript
-const pointA = toDEC([`S43°38'19.39`, `W116°14'28.86"`])
-// [{ lat: -43.63872, long: -116.24135 }]
-const pointB = toDMS([-43.63872, -116.24135])
-// [{ lat: S43°38'19.39", long: W116°14'28.86" }]
-const pointC = toDDM([`32° 18.385' N`, `122° 36.875' W`])
-// [{ lat: N32°18.385', long: W122°36.875' }]
+
 ```
 ---
 
