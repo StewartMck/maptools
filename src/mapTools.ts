@@ -129,6 +129,7 @@ const getArea = function (lat_long: Array<LAT_LONG>) {
   //shoelace algo
   lat_long.push(lat_long[0]);
 
+  // const cart = lat_long.map((point) => convertToCartesian(point));
   const cart = lat_long.map((point) => convertToCartesian(point));
 
   let sum1 = 0;
@@ -142,6 +143,7 @@ const getArea = function (lat_long: Array<LAT_LONG>) {
       sum2 += <number>long1 * <number>lat2;
     }
   });
+
   console.log("sum1:", sum1, "sum2:", sum2);
   // const area = Math.abs(sum1 -sum2) / 2;
   const area = Math.abs(sum1 - sum2) / 2;

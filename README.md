@@ -1,7 +1,7 @@
 # maptools
 
 Maptools is a **WGS84** map utility library.
-It provides basic functionality such as converting coordinates between different formats and calculating distance. Furthermore, given a group of coordinates it can order by distance, find the center point as well as calculate the area.
+It provides basic functionality such as converting coordinates between different formats and calculating distance. Furthermore, given a group of coordinates it can order by distance, find the center point as well as calculate the surface area of a simple polygon.
 
 ## Install
 
@@ -27,9 +27,9 @@ import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from
 
 
 > ## Accepted Input
->- Whitespace is acceptable
->- Negative values for Lat are assumed to be S
->- Negative values for Long are assumed to be W
+>- Whitespace is acceptable in Latitude and Longitude
+>- Negative values for Latitude are assumed to be S
+>- Negative values for Longitude are assumed to be W
 >- Single digits in number format are acceptable
 >- degree, minutes, and seconds signs may be included or ommitted
 >### Degrees Minutes Seconds (DMS)
@@ -287,5 +287,21 @@ const center = getCenterPoint(
 ```javascript
 
 ```
+
+<br>
+
 ---
 
+## Errors
+
+---
+Errors can be handled with a try-catch block.
+
+```javascript
+try {
+  const distanceKM = getDistance({lat: -43.63872, long: -116.24135);
+} catch (e) {
+  console.log(e.message)
+}
+// "At least 2 points are needed to calculate the distance"
+```
