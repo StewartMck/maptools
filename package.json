@@ -2,14 +2,21 @@
   "name": "maptools",
   "version": "1.0.0",
   "description": "A coordinates converter and map tools utility",
-  "main": "./dist/src/index.js",
-  "module": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
+  "browser": "./dist/maptools.js",
+  "main": "./dist/cjs/src/index.js",
+  "module": "./dist/esm/src/index.js",
+  "types": "./dist/esm/src/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "prepublish": "tsc",
-    "prepare": "npm run build",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "build:size": "npx pkgfiles",
+    "typecheck": "tsc --noEmit",
+    "build:check-pkg": "npm pack",
+    "prepublishOnly": "npm run build && npm test",
     "publish": "git push --tags && npm publish"
   },
   "repository": {
@@ -31,6 +38,9 @@
   ],
   "author": "Stewart McKinlay",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StewartMck/maptools/issues"
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^26.0.22",

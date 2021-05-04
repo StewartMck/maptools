@@ -7,6 +7,9 @@ import { FORMAT } from "../libs/constants";
  * @returns [{lat: 'dd.ddddd', long: 'dd.ddddd'}]
  */
 const toDEC = function (input: Array<string | number>) {
+  if(!Array.isArray(input)){
+    throw new TypeError("input is not of type array")
+  }
   return COORDS.convertBatch(input, FORMAT.DEC);
 };
 
@@ -16,6 +19,9 @@ const toDEC = function (input: Array<string | number>) {
  * @returns [{lat: '<N|S>dd°mm'ss.ss"', long: '<W|E>ddd°mm'ss.ss"'}]
  */
 const toDMS = function (input: Array<string | number>) {
+  if(!Array.isArray(input)){
+    throw new TypeError("input is not of type array")
+  }
   return COORDS.convertBatch(input, FORMAT.DMS);
 };
 
@@ -25,6 +31,9 @@ const toDMS = function (input: Array<string | number>) {
  * @returns [{lat: '<N|S>dd°mm'ss.ss"', long: '<W|E>ddd°mm'ss.ss"'}]
  */
 const toDDM = function (input: Array<string | number>) {
+  if(!Array.isArray(input)){
+    throw new TypeError("input is not of type array")
+  }
   return COORDS.convertBatch(input, FORMAT.DDM);
 };
 
