@@ -120,7 +120,7 @@ const pointC = toDDM([`32° 18.385' N`, `122° 36.875' W`])
     |km  | Kilometers |
     |nm  | Nautical miles |
     |mi  | Miles |
-* `precision` - number of decimal places, default is 2. Must be used with format.
+* `precision` - number of decimal places, default is 2. Must be used in combination with format.
 
 #### Returns an Object
 `{"distance": distance, "format": format }`
@@ -150,7 +150,7 @@ const distanceNM = getDistance(points, 'nm', 4);
 
 ---
 
-### `orderByDistance(origin, points, format)`
+### `orderByDistance(origin, points, format = "km")`
 >Accepts an origin point of {"lat": lat, "long": long} type and an array of {"lat": lat, "long": long} objects. Returns an array of objects ordered from nearest to farthest. Iterates over the array and uses the getDistance() function under the hood.
 
 #### Params
@@ -218,6 +218,7 @@ const points = orderByDistance(
 #### Errors
 | Input | Error |
 | :---| :--- |
+|Missing Parameters  | TypeError:  "Input parameters missing" |
 |Less than 2 points  | TypeError:  "At least 2 points are needed to calculate the distance" |
 |Invalid format symbol  | TypeError:  "Invalid output format" |
 
@@ -253,7 +254,7 @@ const center = getCenterPoint(
 #### Errors
 | Input | Error |
 | :---| :--- |
-
+|Missing Parameters  | TypeError:  "Input parameters missing" |
 ---
 
 ### `getArea(points)`

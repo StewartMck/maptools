@@ -13,12 +13,13 @@ const getDistance = function (
   format: string = "KM",
   precision: number = 2
 ) {
-  if (!DISTANCE_FORMAT[<any>format.toUpperCase()]) {
-    throw TypeError("Invalid output format");
+
+  if (!lat_long || lat_long.length < 2) {
+    throw TypeError("At least 2 points are needed to calculate the distance");
   }
 
-  if (lat_long.length < 2) {
-    throw TypeError("At least 2 points are needed to calculate the distance");
+  if (!DISTANCE_FORMAT[<any>format.toUpperCase()]) {
+    throw TypeError("Invalid output format");
   }
 
   const conversion = Number(DISTANCE_FORMAT[<any>format.toUpperCase()]);
@@ -64,6 +65,11 @@ const getDistance = function (
  * @returns Object {"lat": lat, "long": long} in DEC format.
  */
 const getCenterPoint = function (points: Array<LAT_LONG>) {
+  
+  if(!points) {
+    throw TypeError("Input parameters missing")
+  }
+  
   const numberPoints = points.length;
   const { b, a, feSq, seSq } = WGS84;
 
@@ -111,6 +117,11 @@ const orderByDistance = function (
   points: Array<LAT_LONG>,
   format: string = "KM"
 ) {
+
+  if(!origin || !points) {
+    throw TypeError('Input parameters missing')
+  }
+
   const distances: Array<DISTANCE> = [];
   points.map((point) => {
     const { distance } = getDistance([origin, point], format);
@@ -131,6 +142,7 @@ const getArea = function (lat_long: Array<LAT_LONG>) {
 
   // const cart = lat_long.map((point) => convertToCartesian(point));
   const cart = lat_long.map((point) => convertToCartesian(point));
+  console.log(cart)
 
   let sum1 = 0;
   let sum2 = 0;
