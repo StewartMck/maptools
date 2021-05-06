@@ -1,6 +1,6 @@
-# maptools
+# maptoolz
 
-Maptools is a **WGS84** map utility library.
+Maptoolz is a **WGS84** map utility library.
 Its core functionality is to convert between DMS, DEC and DDM coordinate formats. Given a group of coordinates it can calculate distance, order by distance, and find the center point.
 
 ## Install
@@ -8,27 +8,30 @@ Its core functionality is to convert between DMS, DEC and DDM coordinate formats
 ### Node.JS
 
 ```bash
-npm install @stewartmac/maptools --save
+npm install maptoolz --save
 ```
 
 ```javascript
-const maptools = require('maptools');
+const maptoolz = require('maptoolz');
 ```
 
 ```javascript
-import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from 'maptools';
+import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from 'maptoolz';
 ```
 
 ### Web
-All functions can be accessed via window.MapTools
+All functions can be accessed via window.MapToolz
 
 ```html
-<script language="JavaScript" src="/dist/maptools.js"></script>
+<script src="/dist/maptoolz.js"></script>
 <script>
-  window.Maptools.toDEC([`S43°38'19.39`, `W116°14'28.86"`])
+  window.Maptoolz.toDEC([`S43°38'19.39`, `W116°14'28.86"`])
 </script>
 ```
-
+OR
+```html
+<script src="https://unpkg.com/maptoolz/dist/maptoolz.js"></script>
+```
 
 > ## Accepted Input
 >- Whitespace is acceptable in Latitude and Longitude

@@ -1,8 +1,8 @@
 {
-  "name": "@stewartmac/maptools",
+  "name": "maptoolz",
   "version": "1.0.0",
   "description": "A coordinates converter and map tools utility",
-  "main": "./dist/cjs/src/index.js",
+   "main": "./dist/cjs/src/index.js",
   "module": "./dist/esm/src/index.js",
   "types": "./dist/esm/src/index.d.ts",
   "files": [
@@ -20,9 +20,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/StewartMck/maptools"
+    "url": "https://github.com/StewartMck/maptoolz"
   },
-  "homepage": "https://github.com/StewartMck/maptools#readme",
+  "homepage": "https://github.com/StewartMck/maptoolz#readme",
   "keywords": [
     "coordinates",
     "lat",
@@ -38,7 +38,7 @@
   "author": "Stewart McKinlay",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/StewartMck/maptools/issues"
+    "url": "https://github.com/StewartMck/maptoolz/issues"
   },
   "dependencies": {},
   "devDependencies": {

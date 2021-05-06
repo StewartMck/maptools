@@ -8,8 +8,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'maptools.js',
-    library: 'MapTools',
+    filename: 'maptoolz.js',
+    library: 'MapToolz',
     libraryTarget: 'umd',
     globalObject: 'this',
     umdNamedDefine: true,
