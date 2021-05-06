@@ -1,5 +1,9 @@
-import { getDistance, getCenterPoint, orderByDistance, getArea } from '../src/index'
-import {toDEC} from '../src/index'
+import {
+  getDistance,
+  getCenterPoint,
+  orderByDistance,
+} from "../src/index";
+import { toDEC } from "../src/index";
 
 describe("Distance", () => {
   test("Invalid Input: Format", () => {
@@ -67,7 +71,7 @@ describe("Center of Points", () => {
   test("Return middle point for array of coords", () => {
     expect(
       getCenterPoint(
-       toDEC([
+        toDEC([
           -21.0781885,
           130.2679653,
           -22.0304073,
@@ -84,49 +88,45 @@ describe("Center of Points", () => {
 
 describe("Order By Distance", () => {
   test("Valid Input", () => {
-    expect(orderByDistance({lat: 56.495000228117775, long:-88.26338679703304}, toDEC([
-      61.46659628870247, -93.86230787510061,
-      63.32600658563838, -85.55269557039314,
-      60.26988668328659, -77.2462962114008,
-      55.46098932075369, -77.3115710914306,     
-    ]))).toEqual([
+    expect(
+      orderByDistance(
+        { lat: 56.495000228117775, long: -88.26338679703304 },
+        toDEC([
+          61.46659628870247,
+          -93.86230787510061,
+          63.32600658563838,
+          -85.55269557039314,
+          60.26988668328659,
+          -77.2462962114008,
+          55.46098932075369,
+          -77.3115710914306,
+        ])
+      )
+    ).toEqual([
       {
         from: { lat: 56.495000228117775, long: -88.26338679703304 },
-        to: { lat: '61.46660', long: '-93.86231' },
+        to: { lat: "61.46660", long: "-93.86231" },
         distance: 637.8,
-        format: 'km'
+        format: "km",
       },
       {
         from: { lat: 56.495000228117775, long: -88.26338679703304 },
-        to: { lat: '55.46099', long: '-77.31157' },
+        to: { lat: "55.46099", long: "-77.31157" },
         distance: 689.41,
-        format: 'km'
+        format: "km",
       },
       {
         from: { lat: 56.495000228117775, long: -88.26338679703304 },
-        to: { lat: '60.26989', long: '-77.24630' },
+        to: { lat: "60.26989", long: "-77.24630" },
         distance: 764.76,
-        format: 'km'
+        format: "km",
       },
       {
         from: { lat: 56.495000228117775, long: -88.26338679703304 },
-        to: { lat: '63.32601', long: '-85.55270' },
+        to: { lat: "63.32601", long: "-85.55270" },
         distance: 773.21,
-        format: 'km'
+        format: "km",
       },
-    ])
-  })
-})
-
-describe("Calculate Area from Coordinates", () => {
-  test("test1", () => {
-   const coords = toDEC([
-     -30.755695508016164,139.58931179712357,
-    -31.026745675780326,139.67720242212357,
-    -30.929020409557967,139.9243948049360,
-    -30.563139898321857,140.02052517602982,
-    -30.500447229869152,139.79530544946732,
-    ])
-      console.log('area:', getArea(coords))
-  })
-})
+    ]);
+  });
+});
