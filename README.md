@@ -8,7 +8,7 @@ Its core functionality is to convert between DMS, DEC and DDM coordinate formats
 ### Node.JS
 
 ```bash
-npm install maptools --save
+npm install @stewartmac/maptools --save
 ```
 
 ```javascript
