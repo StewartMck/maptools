@@ -73,6 +73,7 @@
     "node_modules",
     "dist",
     "jest.config.js",
-    "tests"
+    "tests",
+    "FutureDev",
   ]
 }
