@@ -1,0 +1,17 @@
+const path = require('path');
+
+module.exports = {
+  mode: 'production',
+  target: 'web',
+  entry: {
+    index: './dist/cjs/src/index.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'maptools.js',
+    library: 'MapTools',
+    libraryTarget: 'umd',
+    globalObject: 'this',
+    umdNamedDefine: true,
+  },
+};

@@ -20,9 +20,13 @@ import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from
 ```
 
 ### Web
+All functions can be accessed via window.MapTools
 
 ```html
 <script language="JavaScript" src="/maptools.js"></script>
+<script>
+  window.Maptools.toDEC([`S43°38'19.39`, `W116°14'28.86"`])
+</script>
 ```
 
 
@@ -68,7 +72,7 @@ import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from
 
 * `lat` – latitude in Accepted format, either string or number
 * `long` – longitude in Accepted format, either string or number
-* `precision` - <strong>toDEC only</strong> Optional number of decimal places, default is 5
+* `precision` - <strong>toDEC only</strong> - Optional number of decimal places, default is 5
 
 #### Returns an Array of Objects
 `[{
@@ -225,7 +229,7 @@ const points = orderByDistance(
 ---
 
 ### `getCenterPoint(points)`
->Accepts an array of {"lat": lat, "long": long} objects. Iterates over the array, converting the pairs of Geodetic coordinates into their respective cartesian coordinates. The height is assumed to be 0. Sums and averages to find the center point. 
+>Accepts an array of {"lat": lat, "long": long} objects. Iterates over the array, converting the pairs of Geodetic coordinates into their respective Cartesian coordinates. The height is assumed to be 0. Sums and averages to find the center point. 
 #### Params
 `Array of pairs of coordinates in object form`
 * `points` - Array of {"lat": lat, "long": long} pairs
@@ -300,7 +304,7 @@ Errors can be handled with a try-catch block.
 
 ```javascript
 try {
-  const distanceKM = getDistance({lat: -43.63872, long: -116.24135);
+  const distanceKM = getDistance({lat: -43.63872, long: -116.24135});
 } catch (e) {
   console.log(e.message)
 }
