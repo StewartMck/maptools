@@ -136,30 +136,5 @@ const orderByDistance = function (
   return distances.sort((a, b) => a.distance - b.distance);
 };
 
-const getArea = function (lat_long: Array<LAT_LONG>) {
-  //shoelace algo
-  lat_long.push(lat_long[0]);
 
-  // const cart = lat_long.map((point) => convertToCartesian(point));
-  const cart = lat_long.map((point) => convertToCartesian(point));
-  console.log(cart)
-
-  let sum1 = 0;
-  let sum2 = 0;
-
-  cart.map((point, i, cart) => {
-    if (cart[i + 1]) {
-      const { X: lat1, Y: long1 } = point;
-      const { X: lat2, Y: long2 } = cart[i + 1];
-      sum1 += <number>lat1 * <number>long2;
-      sum2 += <number>long1 * <number>lat2;
-    }
-  });
-
-  console.log("sum1:", sum1, "sum2:", sum2);
-  // const area = Math.abs(sum1 -sum2) / 2;
-  const area = Math.abs(sum1 - sum2) / 2;
-  console.log("area:", area);
-};
-
-export { getDistance, getArea, getCenterPoint, orderByDistance };
+export { getDistance, getCenterPoint, orderByDistance };

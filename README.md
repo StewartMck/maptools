@@ -1,7 +1,7 @@
 # maptools
 
 Maptools is a **WGS84** map utility library.
-It provides basic functionality such as converting coordinates between different formats and calculating distance. Furthermore, given a group of coordinates it can order by distance, find the center point as well as calculate the surface area of a simple polygon.
+Its core functionality is to convert between DMS, DEC and DDM coordinate formats. Given a group of coordinates it can calculate distance, order by distance, and find the center point.
 
 ## Install
 
@@ -23,7 +23,7 @@ import {toDEC, toDMS, toDDM, getDistance, orderByDistance, getCenterPoint } from
 All functions can be accessed via window.MapTools
 
 ```html
-<script language="JavaScript" src="/maptools.js"></script>
+<script language="JavaScript" src="/dist/maptools.js"></script>
 <script>
   window.Maptools.toDEC([`S43°38'19.39`, `W116°14'28.86"`])
 </script>
@@ -260,38 +260,6 @@ const center = getCenterPoint(
 | :---| :--- |
 |Missing Parameters  | TypeError:  "Input parameters missing" |
 ---
-
-### `getArea(points)`
-
-#### Params
-`Array of pairs of coordinates in object form`
-* `points` - Array of {"lat": lat, "long": long} pairs
-* `format` - unit of measurement for output, default is 'km'
-
-    | Symbol  | Unit of Measurement |
-    | :---| :--- |
-    |m  | Meters |
-    |km  | Kilometers |
-    |nm  | Nautical miles |
-    |mi  | Miles |
-
-#### Returns an Object
-`{"area": area, "format": format }`
-* area is of type number
-* format is of type string
- 
-#### Errors
-| Input | Error |
-| :---| :--- |
-| |  |
-
-
-
-### Examples
-
-```javascript
-
-```
 
 <br>
 
