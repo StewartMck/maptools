@@ -91,10 +91,10 @@ describe("Conversions", () => {
   });
 
   test("INPUT: DEC - OUTPUT: DMS", () => {
-    const position = new Coords("-43.63872", "-116.24135");
+    const position = new Coords(53.47872, -113.46130);
     expect(position.toDMS()).toEqual({
-      lat: `S43°38'19.39"`,
-      long: `W116°14'28.86"`,
+      lat: `N53°29'16.61"`,
+      long: `W113°28'19.32"`,
     });
   });
 

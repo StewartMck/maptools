@@ -112,8 +112,8 @@ export default class Coords {
         sec = value![2];
         break;
       case FORMAT.DEC:
-        min = Math.round((decDeg - deg) * 60);
-        sec = Number(((decDeg - deg - min / 60) * 3600).toFixed(2));
+        min = Math.round(Math.abs((decDeg - deg) * 60));
+        sec = Math.abs(Number(((decDeg - deg - min / 60) * 3600).toFixed(2)));
         break;
       case FORMAT.DDM:
         min = ~~value![1];
